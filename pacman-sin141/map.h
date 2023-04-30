@@ -1,0 +1,54 @@
+#ifndef MAP_H
+#define MAP_H
+
+#include<iostream>
+#include<allegro5/allegro5.h>
+#include<allegro5/allegro_image.h>
+#include "wall.h"
+#include "coin.h"
+
+using namespace std;
+const int MAP_LINHAS = 21;
+const int MAP_COLUNAS = 21;
+
+char map[MAP_LINHAS][MAP_COLUNAS] = {
+"0000000000000000000",
+"0111111110111111110",
+"0100100010100010010",
+"0111111111111111110",
+"0100101000001010010",
+"0111101110111011110",
+"0000100020200010000",
+"2220102222222010222",
+"0000102002002010000",
+"2222122022202212222",
+"0000102000002010000",
+"2220102222222010222",
+"0000102000002010000",
+"0111111110111111110",
+"0100100010100010010",
+"0110111111111110110",
+"0010101000001010100",
+"0111101110111011110",
+"0100000010100000010",
+"0111111111111111110",
+"0000000000000000000"
+};
+
+void draw_map() {
+	Wall wall_obj;
+	Coin coin_obj;
+	int linha, coluna;
+	for (linha = 0; linha < MAP_LINHAS; linha++) {
+		for (coluna = 0; coluna < MAP_COLUNAS; coluna++) {
+			if (map[linha][coluna] == '0') {
+				wall_obj.draw_wall(linha, coluna);
+			}
+			if (map[linha][coluna] == '1') {
+				coin_obj.draw_coin(linha, coluna);
+			}
+		}
+	}
+}
+
+#endif // !MAP_H
