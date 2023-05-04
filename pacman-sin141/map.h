@@ -35,6 +35,7 @@ char map[MAP_LINHAS][MAP_COLUNAS] = {
 "0111111111111111110",
 "0000000000000000000"
 };
+//teste
 
 void draw_map() {
 	Wall wall_obj[200];
