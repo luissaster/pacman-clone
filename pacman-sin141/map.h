@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include<iostream>
+#include<stdio.h>
 #include<allegro5/allegro5.h>
 #include<allegro5/allegro_image.h>
 #include "wall.h"
@@ -36,19 +37,28 @@ char map[MAP_LINHAS][MAP_COLUNAS] = {
 };
 
 void draw_map() {
-	Wall wall_obj;
-	Coin coin_obj;
-	int linha, coluna;
+	Wall wall_obj[200];
+	Coin coin_obj[160];
+	int linha, coluna, qntdWall= 0 , qntdCoin = 0;
 	for (linha = 0; linha < MAP_LINHAS; linha++) {
 		for (coluna = 0; coluna < MAP_COLUNAS; coluna++) {
 			if (map[linha][coluna] == '0') {
-				wall_obj.draw_wall(linha, coluna);
+				wall_obj[qntdWall].draw_wall(linha, coluna);
+				printf("Parede criada em [%d][%d].\n", linha, coluna);
+				qntdWall++;
 			}
 			if (map[linha][coluna] == '1') {
-				coin_obj.draw_coin(linha, coluna);
+				coin_obj[qntdCoin].draw_coin(linha, coluna);
+				printf("Moeda criada em [%d][%d].\n", linha, coluna);
+				qntdCoin++;
+
 			}
 		}
 	}
+	cout << "Moedas criadas: " << qntdCoin << endl; //151
+	cout << "Paredes criadas: " << qntdWall << endl; //198
 }
 
 #endif // !MAP_H
+
+
