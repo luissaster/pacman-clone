@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include<iostream>
 #include"map.h"
+//all
 
 using namespace std;
 
