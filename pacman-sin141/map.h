@@ -35,7 +35,6 @@ char map[MAP_LINHAS][MAP_COLUNAS] = {
 "0111111111111111110",
 "0000000000000000000"
 };
-//teste
 
 void draw_map() {
 	Wall wall_obj[200];
@@ -45,12 +44,12 @@ void draw_map() {
 		for (coluna = 0; coluna < MAP_COLUNAS; coluna++) {
 			if (map[linha][coluna] == '0') {
 				wall_obj[qntdWall].draw_wall(linha, coluna);
-				printf("Parede criada em [%d][%d].\n", linha, coluna);
+				//printf("Parede criada em [%d][%d].\n", linha, coluna);
 				qntdWall++;
 			}
 			if (map[linha][coluna] == '1') {
 				coin_obj[qntdCoin].draw_coin(linha, coluna);
-				printf("Moeda criada em [%d][%d].\n", linha, coluna);
+				//printf("Moeda criada em [%d][%d].\n", linha, coluna);
 				qntdCoin++;
 
 			}
