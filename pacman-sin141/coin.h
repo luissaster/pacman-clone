@@ -12,4 +12,4 @@ private:
 	ALLEGRO_BITMAP* coin_sprite;
 };
 
-#endif // !PILULAS_H
+#endif // !COIN_H
