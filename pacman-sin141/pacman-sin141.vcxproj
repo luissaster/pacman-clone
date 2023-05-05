@@ -141,8 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="coin.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="pacman-sin141.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
