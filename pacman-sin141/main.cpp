@@ -29,7 +29,6 @@ int main(void) {
         return 0;
     }
 
-
     display = al_create_display(608, 672); //quantidade de paredes em uma linha/coluna * 32 (tamanho do sprite)
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60); //60 quadros por segundo
@@ -37,9 +36,9 @@ int main(void) {
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_timer_event_source(timer));
+    al_start_timer(timer);
 
     bool running = true;
-    al_start_timer(timer);
     draw_map();
     while (running) {
 
