@@ -9,8 +9,8 @@ public:
 	Entidade();
 	~Entidade();
 
-	int getX();
-	int getY();
+	float getX();
+	float getY();
 	void setX(float x);
 	void setY(float y);
 	int getDirection();
@@ -18,8 +18,8 @@ public:
 
 
 protected:
-	int posX = 0;
-	int posY = 0;
+	float posX = 0;
+	float posY = 0;
 	int direction = 4; // 0 - cima, 1 - direita, 2 - esquerda, 3 - baixo, 4 - parado
 };
 

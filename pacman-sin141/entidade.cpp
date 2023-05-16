@@ -2,10 +2,10 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 
-int Entidade::getX() {
+float Entidade::getX() {
 	return this->posX;
 }
-int Entidade::getY() {
+float Entidade::getY() {
 	return this->posY;
 }
 void Entidade::setX(float x) {

@@ -48,8 +48,25 @@ int main(void) {
         al_wait_for_event(queue, &event);
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
-            cout <<"X: " << player.getX() << endl;
-            cout << "Y: " << player.getY() << endl;
+            //cout <<"X: " << player.getX() << endl;
+            //cout << "Y: " << player.getY() << endl;
+            //player.movePacman();
+            switch (player.getDirection()) {
+            case 0:
+                player.setY((player.getY() - 0.7));
+                break;
+            case 1:
+                player.setX((player.getX() + 0.7));
+                break;
+            case 2:
+                player.setX((player.getX() - 0.7));
+                break;
+            case 3:
+                player.setY((player.getY() + 0.7));
+                break;
+            default:
+                break;
+            }
             redraw = true;
         }
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -72,7 +89,6 @@ int main(void) {
                 player.setDirection(1);
                 break;
             }
-            redraw = true;
         }
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
@@ -81,7 +97,6 @@ int main(void) {
         if (redraw && al_is_event_queue_empty(queue)) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            player.movePacman();
             player.renderPacman();
             draw_map();
             al_flip_display();
