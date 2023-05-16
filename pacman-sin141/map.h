@@ -56,8 +56,8 @@ void draw_map() {
 			}
 		}
 	}
-	cout << "Moedas criadas: " << qntdCoin << endl; //151 moedas no mapa original
-	cout << "Paredes criadas: " << qntdWall << endl; //198 paredes no mapa original
+	//cout << "Moedas criadas: " << qntdCoin << endl; //151 moedas no mapa original
+	//cout << "Paredes criadas: " << qntdWall << endl; //198 paredes no mapa original
 }
 
 #endif // !MAP_H
