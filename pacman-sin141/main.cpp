@@ -53,20 +53,71 @@ int main(void) {
             //player.movePacman();
             switch (player.getDirection()) {
             case 0:
-                player.setY((player.getY() - 0.7));
+                player.setY((player.getY() - 0.7)); //cima
                 break;
             case 1:
-                player.setX((player.getX() + 0.7));
+                player.setX((player.getX() + 0.7)); //direita
                 break;
             case 2:
-                player.setX((player.getX() - 0.7));
+                player.setX((player.getX() - 0.7)); //esquerda
                 break;
             case 3:
-                player.setY((player.getY() + 0.7));
+                player.setY((player.getY() + 0.7)); //baixo
                 break;
             default:
                 break;
             }
+            
+            if (map[(int)player.getY() / PLAYER_SIZE][(int)player.getX() / PLAYER_SIZE] == '1') { // colisao moedas
+                cout << "colisao moeda\n";
+                map[(int)player.getY() / PLAYER_SIZE][(int)player.getX() / PLAYER_SIZE] = '2'; // remover a moeda da matriz
+            }
+            if (map[(int)(player.getY() + PLAYER_SIZE) / PLAYER_SIZE][(int)player.getX() / PLAYER_SIZE] == '0') { //colisao para baixo
+                if (player.getDirection() == 3) {
+                    cout << "colisao com parede de baixo\n";
+                    player.colisaoBaixo = true;
+                    player.setDirection(4);
+                }
+                else {
+                    player.colisaoBaixo = false;
+                }
+            }
+            if (map[(int)(player.getY() - 2) / PLAYER_SIZE][(int)player.getX() / PLAYER_SIZE] == '0') { //colisao para cima
+                if (player.getDirection() == 0) {
+                    cout << "colisao com parede de cima\n";
+                    player.colisaoCima = true;
+                    player.setDirection(4);
+                }
+                else {
+                    player.colisaoCima = false;
+                }
+            }
+            if (map[(int)player.getY() / PLAYER_SIZE][(int)(player.getX() - 2) / PLAYER_SIZE] == '0') { //colisao para esquerda
+                if (player.getDirection() == 2) {
+                    cout << "colisao com parede da esquerda\n";
+                    player.colisaoEsquerda = true;
+                    player.setDirection(4);
+                }
+                else {
+                    player.colisaoEsquerda = false;
+                }
+            }
+            if (map[(int)player.getY() / PLAYER_SIZE][(int)(player.getX() + PLAYER_SIZE) / PLAYER_SIZE] == '0') { //colisao para direita
+                if (player.getDirection() == 1) {
+                    cout << "colisao com parede da direita\n";
+                    player.colisaoDireita = true;
+                    player.setDirection(4);
+                }
+                else {
+                    player.colisaoDireita = true;
+                }
+            }
+
+
+
+
+
+
             redraw = true;
         }
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {

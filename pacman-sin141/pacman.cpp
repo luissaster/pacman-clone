@@ -1,4 +1,5 @@
 #include "pacman.h"
+#include <stdio.h>
 #define PACMAN_SPRITE_RIGHT "sprites/pacman_right.png"
 #define PACMAN_SPRITE_LEFT "sprites/pacman_left.png"
 #define PACMAN_SPRITE_UP "sprites/pacman_up.png"
@@ -12,6 +13,10 @@ Pacman::Pacman() {
 	setX(START_X);
 	setY(START_Y);
 	setDirection(4);
+	colisaoBaixo = false;
+	colisaoCima = false;
+	colisaoDireita = false;
+	colisaoEsquerda = false;
 }
 void Pacman::renderPacman() {
 	al_draw_bitmap(Pacman_sprite, getX(), getY(), 0);
