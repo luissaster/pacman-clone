@@ -1,7 +1,7 @@
 ﻿#include "pacman.h"
 
 Pacman::Pacman() {
-    moveSpeed = 1.0;
+    moveSpeed = 2.0;
 
     // Position of the player in pixels
     // This is never used, as when we create the player in main.cpp we give it a position
