@@ -1,99 +1,84 @@
-﻿#ifndef PACMAN2_H
-#define PACMAN2_H
+﻿#ifndef PACMAN_H
+#define PACMAN_H
 
-#include <iostream>
 #include <vector>
+#include <math.h>
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_audio.h>
 
-#include "allegro5/allegro.h"
-#include "allegro5/allegro_image.h"
+#define PLAYER_SIZE 32 // Our pacman sprite is 32x32 pixels
 
-using namespace std;
 
-class Pacman
-{
+class Pacman {
 public:
     Pacman();
-    Pacman(int, int);
+    Pacman(int x, int y);
 
-    ALLEGRO_BITMAP* getPacman();
+    bool checkWallCollision(std::vector<std::vector<char>>& map);
+    bool checkPacmanCollisionUp(std::vector<std::vector<char>>& map);
+    bool checkPacmanCollisionDown(std::vector<std::vector<char>>& map);
+    bool checkPacmanCollisionRight(std::vector<std::vector<char>>& map);
+    bool checkPacmanCollisionLeft(std::vector<std::vector<char>>& map);
 
-    void posicaoPacman();
-
-    bool colisaoPacman(vector<vector<char>>& mapa);
-
-    void colisaoPacmanPirula(vector<vector<char>>& mapa);
-    int getAtualPlacar();
-
-    bool colisaoPacmanTop(vector<vector<char>>& mapa);
-    bool colisaoPacmanBottom(vector<vector<char>>& mapa);
-    bool colisaoPacmanRight(vector<vector<char>>& mapa);
-    bool colisaoPacmanLeft(vector<vector<char>>& mapa);
-
-    int getPacmanMatrizPosX();
-    int getPacmanMatrizPosY();
+    int getScore();
+    int getPacmanArrayPosX();
+    int getPacmanArrayPosY();
 
     float getPacmanX();
     float getPacmanY();
 
-    void setPacmanX(float);
-    void setPacmanY(float);
-
-    void movimentacaoPacman(int, vector<vector<char>>& mapa);
-    void execusaoMovPacman(vector<vector<char>>& mapa);
-
-    void desenhaPacman(ALLEGRO_BITMAP*, int sprite);
+    void calculatePacmanPosition();
+    void checkCoinCollision(std::vector<std::vector<char>>& map);
+    void checkTeleportCollisionLeft(std::vector<std::vector<char>>& map);
+    void checkTeleportCollisionRight(std::vector<std::vector<char>>& map);
+    void setPacmanX(float x);
+    void setPacmanY(float y);
+    void checkPacmanMovement(int instruction, std::vector<std::vector<char>>& map);
+    void movePacman(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* chomp);
+    void renderPacman(ALLEGRO_BITMAP* imgPacman, int sprite);
 
     ~Pacman();
 
 private:
-    ALLEGRO_BITMAP* pacman;
+    // Normal float values for the pacman, these have to be converted to int
+    float moveSpeed;
+    float playerX;
+    float playerY;
 
-    //Variaveis de posicao em Px
-    float Player_x;
-    float Player_y;
+    // This is part of the float -> intenger conversion algorithm
+    int playerColY;
+    int playerColX;
 
-    //Posição do player
-    int colisaoYPlayer;
-    int colisaoXPlayer;
+    int colYCollisionUp;
+    int colXCollisionUp;
+    int colYCollisionUpNext;
+    int colXCollisionUpNext;
 
-    //Colisão Cima
-    int colisaoYC;
-    int colisaoXC;
-    int colisaoYCN;
-    int colisaoXCN;
+    int colYCollisionLeft;
+    int colXCollisionLeft;
+    int colYCollisionLeftNext;
+    int colXCollisionLeftNext;
 
-    //Colisão Esquerda
-    int colisaoYE;
-    int colisaoXE;
-    int colisaoYEN;
-    int colisaoXEN;
+    int colYCollisionRight;
+    int colXCollisionRight;
+    int colYCollisionRightNext;
+    int colXCollisionRightNext;
 
-    //Colisão Direita
-    int colisaoYD;
-    int colisaoXD;
-    int colisaoYDN;
-    int colisaoXDN;
+    int colYCollisionBottom;
+    int colXCollisionBottom;
+    int colYCollisionBottomNext;
+    int colXCollisionBottomNext;
 
-    //Colisão Baixo
-    int colisaoXB;
-    int colisaoYB;
-    int colisaoXBN;
-    int colisaoYBN;
+    // Related to the game's functionality
+    int score;
+    int pacmanHeight;
+    int pacmanWidth;
+    int direction;
 
-    int placar;
-
-    //Variaveis de Tamanho da Sprite
-    int pacman_altura;
-    int pacman_largura;
-
-    //Variaveis de Dire��o
-    bool top;
-    bool right;
-    bool bottom;
-    bool left;
-    int lado;
-
+    bool moveUp;
+    bool moveDown;
+    bool moveLeft;
+    bool moveRight;
 };
 
-
-#endif // !PACMAN2_H
+#endif // PACMAN_H

@@ -6,7 +6,7 @@ class Wall {
 public:
 	Wall();
 	~Wall();
-	void draw_wall(int linha, int coluna);
+	void renderWall(int linha, int coluna);
 private:
 	ALLEGRO_BITMAP* wall_sprite;
 };
