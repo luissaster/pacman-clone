@@ -137,7 +137,7 @@ int main(void) {
         return 0;
     }
     if (!sample2) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to load songs/pickupCoin.mp3",
+        al_show_native_message_box(display, "Error", "Error", "Failed to load songs/pacmanChomp.wav",
             NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return 0;
     }
