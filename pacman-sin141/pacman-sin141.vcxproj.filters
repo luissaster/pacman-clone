@@ -24,19 +24,30 @@
     <ClCompile Include="main.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="pacman.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="wall.h">
-      <Filter>Arquivos de Origem</Filter>
+    <ClInclude Include="coin.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="map.h">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="coin.h">
-      <Filter>Arquivos de Origem</Filter>
+    <ClInclude Include="wall.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="pacman.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="map.txt">
+      <Filter>Arquivos de Recurso</Filter>
+    </Text>
   </ItemGroup>
 </Project>

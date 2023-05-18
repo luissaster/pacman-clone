@@ -142,15 +142,20 @@
   <ItemGroup>
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pacman.cpp" />
     <ClCompile Include="wall.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="coin.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="pacman.h" />
+    <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="coin.h" />
-    <ClInclude Include="map.h" />
-    <ClInclude Include="wall.h" />
+    <Text Include="map.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
