@@ -2,6 +2,8 @@
 #include<stdio.h>
 #include<allegro5/allegro5.h>
 #include<allegro5/allegro_image.h>
+#include<allegro5/allegro_font.h>
+#include<allegro5/allegro_ttf.h>
 #include<allegro5/allegro_native_dialog.h>
 #include<allegro5/allegro_primitives.h>
 #include<vector>
@@ -39,12 +41,16 @@ int main(void) {
     al_init(); //inicializacoes
     al_init_image_addon();
     al_install_keyboard();
+    al_init_font_addon();
+    al_init_ttf_addon();
 
     ALLEGRO_DISPLAY* display = NULL;
     ALLEGRO_EVENT_QUEUE* queue = NULL;
     ALLEGRO_TIMER* timer = NULL;
     ALLEGRO_BITMAP* pacman_sprite = NULL;
+    ALLEGRO_FONT* font = NULL;
     pacman_sprite = al_load_bitmap(PACMAN_SPRITE);
+    font = al_load_font("arial.ttf", 24, 0);
 
     //carregar mapa
     vector<vector<char>> mapa;
@@ -77,13 +83,12 @@ int main(void) {
     int tempo, miliseg = 200;
     bool redraw = true;
     int proximaInstrucao = 0;
-    Pacman player(32, 32);
+    Pacman player(288, 480);
 
     while (running) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
-
         player.posicaoPacman();
         player.colisaoPacmanPirula(mapa);
 
@@ -142,9 +147,14 @@ int main(void) {
         if (redraw && al_is_event_queue_empty(queue)) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            player.desenhaPacman(pacman_sprite, sprite);
             draw_map(mapa);
+            player.desenhaPacman(pacman_sprite, sprite);
+            al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", player.getAtualPlacar());
             al_flip_display();
+        }
+
+        if (player.getAtualPlacar() == 151) {
+            running = false;
         }
 
     }
