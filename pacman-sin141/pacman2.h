@@ -41,7 +41,7 @@ public:
     void movimentacaoPacman(int, vector<vector<char>>& mapa);
     void execusaoMovPacman(vector<vector<char>>& mapa);
 
-    void desenhaPacman(ALLEGRO_BITMAP*);
+    void desenhaPacman(ALLEGRO_BITMAP*, int sprite);
 
     ~Pacman();
 

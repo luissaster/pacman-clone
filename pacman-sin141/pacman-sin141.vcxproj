@@ -141,14 +141,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="coin.cpp" />
-    <ClCompile Include="entidade.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pacman2.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="coin.h" />
-    <ClInclude Include="entidade.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="pacman2.h" />
     <ClInclude Include="wall.h" />

@@ -33,8 +33,6 @@ void carregarMapa(const char* nomeArquivo, vector<vector<char>>& mapa) {
         cout << "Erro ao abrir o arquivo." << endl;
     }
 }
-
-
 const int FPS = 60;
 int main(void) {
 
@@ -97,7 +95,7 @@ int main(void) {
                 al_set_timer_count(timer, 0);
                 sprite = sprite + fator;
                 if (sprite == 0) fator = 1;
-                if (sprite == 5) fator = -1;
+                if (sprite == 1) fator = -1;
             }
 
             //Recebe o comando e guarda ele na variavel ate q ele seja possivel de ser executado
@@ -125,20 +123,18 @@ int main(void) {
 
             redraw = true;
         }
+        else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+            running = false;
+            break;
+        }
+        else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+             teclas[event.keyboard.keycode] = true;
+        }
+        else if (event.type == ALLEGRO_EVENT_KEY_UP) {
+            teclas[event.keyboard.keycode] = false;
 
-    else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-        running = false;
-        break;
-    }
-    else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
-        teclas[event.keyboard.keycode] = true;
-    }
-    else if (event.type == ALLEGRO_EVENT_KEY_UP) {
-        teclas[event.keyboard.keycode] = false;
+        }
 
-    }
-
-        
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
         }
@@ -146,11 +142,10 @@ int main(void) {
         if (redraw && al_is_event_queue_empty(queue)) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            player.desenhaPacman(pacman_sprite);
+            player.desenhaPacman(pacman_sprite, sprite);
             draw_map(mapa);
             al_flip_display();
         }
-
 
     }
 

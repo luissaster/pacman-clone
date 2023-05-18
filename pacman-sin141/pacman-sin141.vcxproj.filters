@@ -24,9 +24,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="entidade.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="pacman2.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
@@ -35,9 +32,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="entidade.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="coin.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>

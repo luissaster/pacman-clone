@@ -233,7 +233,7 @@ void Pacman::movimentacaoPacman(int Instrucao, vector<vector<char>>& mapa) {
         bottom = false;
         left = false;
         right = false;
-        lado = 2;
+        lado = 3;
     }
     //Bottom
     if (Instrucao == ALLEGRO_KEY_DOWN && colisaoPacmanBottom(mapa) == true)
@@ -242,7 +242,7 @@ void Pacman::movimentacaoPacman(int Instrucao, vector<vector<char>>& mapa) {
         top = false;
         left = false;
         right = false;
-        lado = 3;
+        lado = 1;
     }
     //Left
     if (Instrucao == ALLEGRO_KEY_LEFT && colisaoPacmanLeft(mapa) == true)
@@ -251,7 +251,7 @@ void Pacman::movimentacaoPacman(int Instrucao, vector<vector<char>>& mapa) {
         top = false;
         bottom = false;
         right = false;
-        lado = 1;
+        lado = 2;
     }
     //Right
     if (Instrucao == ALLEGRO_KEY_RIGHT && colisaoPacmanRight(mapa) == true)
@@ -268,29 +268,29 @@ void Pacman::execusaoMovPacman(vector<vector<char>>& mapa) {
 
     //Executa a movimentação
 
-    if (top == true && colisaoPacmanTop(mapa) == true) { //Movimetação para Cima
+    if (top == true && colisaoPacmanTop(mapa) == true) { //para cima
         setPacmanY(getPacmanY() - 1.0);
         //darth_y -= 2.0;
     }
 
-    if (bottom == true && colisaoPacmanBottom(mapa) == true) { //Movimentação para Baixo
+    if (bottom == true && colisaoPacmanBottom(mapa) == true) { //para baixo
         setPacmanY(getPacmanY() + 1.0);
         //darth_y += 2.0;
     }
 
-    if (left == true && colisaoPacmanLeft(mapa) == true) { //Movimentação para Esquerda
+    if (left == true && colisaoPacmanLeft(mapa) == true) { //para esquerda
         setPacmanX(getPacmanX() - 1.0);
         //darth_x -= 2.0;
     }
 
-    if (right == true && colisaoPacmanRight(mapa) == true) { //Movimentação para Direita
+    if (right == true && colisaoPacmanRight(mapa) == true) { //para direita
         setPacmanX(getPacmanX() + 1.0);
         //darth_x += 2.0;
     }
 }
 
-void Pacman::desenhaPacman(ALLEGRO_BITMAP* ImgPacman) {
-    al_draw_bitmap_region(ImgPacman, 0 * pacman_largura, 0 * pacman_altura, pacman_largura, pacman_altura, getPacmanX(), getPacmanY(), 0);
+void Pacman::desenhaPacman(ALLEGRO_BITMAP* ImgPacman, int sprite) {
+    al_draw_bitmap_region(ImgPacman, lado * pacman_largura, sprite * pacman_altura, pacman_largura, pacman_altura, getPacmanX(), getPacmanY(), 0);
 }
 
 ALLEGRO_BITMAP* Pacman::getPacman() {
@@ -299,6 +299,6 @@ ALLEGRO_BITMAP* Pacman::getPacman() {
 
 Pacman::~Pacman()
 {
-    al_destroy_bitmap(pacman); //Destroi a tela
+    al_destroy_bitmap(pacman);
 }
 
