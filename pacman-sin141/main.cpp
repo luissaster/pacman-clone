@@ -8,7 +8,7 @@
 #include<fstream>
 #include<string>
 #include"map.h"
-#include"pacman2.h"
+#include"pacman.h"
 #define PACMAN_SPRITE "sprites/pacman.png"
 
 using namespace std;

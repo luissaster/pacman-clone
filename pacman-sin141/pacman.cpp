@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "pacman2.h"
+#include "pacman.h"
 
 using namespace std;
 
