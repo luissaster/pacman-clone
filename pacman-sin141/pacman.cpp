@@ -205,7 +205,7 @@ void Pacman::checkPacmanMovement(int instruction, std::vector<std::vector<char>>
 
 void Pacman::movePacman(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* chomp) {
     // Execute the movement
-    al_play_sample(chomp, 0.03, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+    al_play_sample(chomp, 0.08, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
     if (moveUp && checkPacmanCollisionUp(map)) {
         setPacmanY(getPacmanY() - moveSpeed); // Move up
     }
