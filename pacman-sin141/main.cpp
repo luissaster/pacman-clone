@@ -155,7 +155,7 @@ int main(void) {
     bool redraw = true; // Game's condition to redraw ("refresh") the screen
     int proximaInstrucao = 0; // Player's next intended movement
     Pacman player(288, 480); // Starts the player somewhere close to the centre, TBH I don't remember where the player starts in the OG PacMan
-    al_play_sample(sample1, 0.2, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
+    al_play_sample(sample1, 0.5, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
 
     while (running) {
         ALLEGRO_EVENT event;
@@ -189,7 +189,7 @@ int main(void) {
             if (teclas[ALLEGRO_KEY_RIGHT]) {
                 proximaInstrucao = ALLEGRO_KEY_RIGHT;
             }
-
+                
             // More player functions, these are responsible for checking if the next movement is valid and executing it, respectively
             player.checkPacmanMovement(proximaInstrucao, mapa);
             player.movePacman(mapa, sample2);
