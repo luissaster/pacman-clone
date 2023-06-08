@@ -17,7 +17,7 @@ public:
     Pacman(int x, int y);
     ~Pacman();
     int getScore();
-    void checkCoinCollision(std::vector<std::vector<char>>& map);
+    void checkCoinCollision(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* pacmanChomp);
     bool checkGhostCollision(Blinky& f1, Pinky& f2, Inky& f3, Clyde& f4);
     void renderPacman(ALLEGRO_BITMAP* imgPacman, int sprite);
 private:

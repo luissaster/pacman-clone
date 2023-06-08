@@ -9,8 +9,9 @@ Pacman::Pacman(int x, int y) : Entity() {
     entitySize = 32;
     score = 0;
 }
-void Pacman::checkCoinCollision(std::vector<std::vector<char>>& map) {
+void Pacman::checkCoinCollision(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* pacmanChomp) {
     if (map[getEntityConvertedY()][getEntityConvertedX()] == '1') {
+        al_play_sample(pacmanChomp, 0.8, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
         map[getEntityConvertedY()][getEntityConvertedX()] = '2';
         score++;
     }

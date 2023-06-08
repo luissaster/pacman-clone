@@ -23,6 +23,7 @@
 #define FONT "fonts/arial.ttf"
 #define MAIN_SONG "sounds/mainTheme.mp3"
 #define PACMAN_CHOMP "sounds/pacmanChomp.wav"
+#define PACMAN_DEATH_SOUND "sounds/pacmanDeath.mp3"
 #define FPS 60
 
 int main(void) {
@@ -45,11 +46,13 @@ int main(void) {
     ALLEGRO_BITMAP* inky_sprite = NULL;
     ALLEGRO_BITMAP* clyde_sprite = NULL;
     ALLEGRO_FONT* font = NULL;
-    ALLEGRO_SAMPLE* sample1 = NULL; // main song
-    ALLEGRO_SAMPLE* sample2 = NULL; // pacman walk sound
+    ALLEGRO_SAMPLE* mainSongAudio = NULL; 
+    ALLEGRO_SAMPLE* pacmanEatAudio = NULL;
+    ALLEGRO_SAMPLE* pacmanDiesAudio = NULL; 
     ALLEGRO_SAMPLE_ID mainSongID;
-    sample1 = al_load_sample(MAIN_SONG);
-    sample2 = al_load_sample(PACMAN_CHOMP);
+    mainSongAudio = al_load_sample(MAIN_SONG);
+    pacmanEatAudio = al_load_sample(PACMAN_CHOMP);
+    pacmanDiesAudio = al_load_sample(PACMAN_DEATH_SOUND);
     pacman_sprite = al_load_bitmap(PACMAN_SPRITE);
     blinky_sprite = al_load_bitmap(BLINKY_SPRITE);
     pinky_sprite = al_load_bitmap(PINKY_SPRITE);
@@ -115,26 +118,51 @@ int main(void) {
                 NULL, ALLEGRO_MESSAGEBOX_ERROR);
             return 0;
         }
-        if (!pacman_sprite) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/pacman.png!",
-                NULL, ALLEGRO_MESSAGEBOX_ERROR);
-            return 0;
-        }
         if (!font) {
             al_show_native_message_box(display, "Error", "Error", "Failed to load fonts/arial.ttf!",
                 NULL, ALLEGRO_MESSAGEBOX_ERROR);
             return 0;
         }
-        if (!sample1) {
+        if (!mainSongAudio) {
             al_show_native_message_box(display, "Error", "Error", "Failed to load songs/mainTheme.mp3",
                 NULL, ALLEGRO_MESSAGEBOX_ERROR);
             return 0;
         }
-        if (!sample2) {
+        if (!pacmanEatAudio) {
             al_show_native_message_box(display, "Error", "Error", "Failed to load songs/pacmanChomp.wav",
                 NULL, ALLEGRO_MESSAGEBOX_ERROR);
             return 0;
+        }if (!pacmanDiesAudio) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load songs/pacmanDeath.mp3",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
         }
+        if (!pacman_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/pacman.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!blinky_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/blinky.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!pinky_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/pinky.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!inky_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/inky.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!clyde_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/clyde.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+
         isStarting = false;
     }
 
@@ -159,15 +187,21 @@ int main(void) {
     Inky ghostInky(288, 288);
     Clyde ghostClyde(288, 256);
 
-    al_play_sample(sample1, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
+    al_play_sample(mainSongAudio, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
     gameMap.loadMap("map.txt", mapa);
 
     while (running) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
+
+        ghostBlinky.calculateEntityPosition();
+        ghostPinky.calculateEntityPosition();
+        ghostInky.calculateEntityPosition();
+        ghostClyde.calculateEntityPosition();
         player.calculateEntityPosition();
-        player.checkCoinCollision(mapa);
+
+        player.checkCoinCollision(mapa, pacmanEatAudio);
 
         player.checkTeleportCollisionLeft(mapa);
         player.checkTeleportCollisionRight(mapa);
@@ -179,11 +213,6 @@ int main(void) {
         ghostPinky.checkTeleportCollisionRight(mapa);
         ghostInky.checkTeleportCollisionLeft(mapa);
         ghostInky.checkTeleportCollisionRight(mapa);
-
-        ghostBlinky.calculateEntityPosition();
-        ghostPinky.calculateEntityPosition();
-        ghostInky.calculateEntityPosition();
-        ghostClyde.calculateEntityPosition();
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             // Timer to change the bitmap, used for animating PACMAN
@@ -207,8 +236,7 @@ int main(void) {
             if (teclas[ALLEGRO_KEY_RIGHT]) {
                 nextMove = ALLEGRO_KEY_RIGHT;
             }
-                
-            // More player functions, these are responsible for checking if the next movement is valid and executing it, respectively
+
             player.checkEntityMovement(nextMove, mapa);
             player.moveEntity(mapa);
             ghostBlinky.moveRandom(mapa);
@@ -239,7 +267,6 @@ int main(void) {
             al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", player.getScore());
             al_flip_display();
         }
-
         // End the game when closing the window
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
@@ -249,16 +276,19 @@ int main(void) {
             running = false;
         }
         if (player.checkGhostCollision(ghostBlinky, ghostPinky, ghostInky, ghostClyde)) {
+            al_stop_sample(&mainSongID);
+            al_play_sample(pacmanDiesAudio, 0.6, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+            al_rest(3);
             running = false;
         }
-
     }
 
     // Cleaning: if u create something, don't forget to destroy it
     // In cases like the walls and coins, where they are included objects, don't forget to destroy the bitmap in the classes' destructor
     al_uninstall_keyboard();
-    al_destroy_sample(sample1);
-    al_destroy_sample(sample2);
+    al_destroy_sample(mainSongAudio);
+    al_destroy_sample(pacmanEatAudio);
+    al_destroy_sample(pacmanDiesAudio);
     al_uninstall_audio();
     al_destroy_bitmap(pacman_sprite);
     al_destroy_bitmap(blinky_sprite);
