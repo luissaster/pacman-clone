@@ -104,8 +104,7 @@ void Entity::checkEntityMovement(int instruction, std::vector<std::vector<char>>
         direction = 0;
     }
 }
-void Entity::moveEntity(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* chomp) {
-    al_play_sample(chomp, 0.08, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+void Entity::moveEntity(std::vector<std::vector<char>>& map) {
     if (moveUp && checkEntityCollisionUp(map)) {
         setEntityYPosition(getEntityY() - moveSpeed);
     }

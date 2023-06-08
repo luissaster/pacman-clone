@@ -23,7 +23,7 @@ public:
     void setEntityXPosition(float x);
     void setEntityYPosition(float y);
     void checkEntityMovement(int instruction, std::vector<std::vector<char>>& map);
-    void moveEntity(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* chomp);
+    void moveEntity(std::vector<std::vector<char>>& map);
     void checkTeleportCollisionLeft(std::vector<std::vector<char>>& map);
     void checkTeleportCollisionRight(std::vector<std::vector<char>>& map);
 protected:

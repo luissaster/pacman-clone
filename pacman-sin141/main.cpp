@@ -154,23 +154,26 @@ int main(void) {
     // Objects
     Map gameMap;
     Pacman player(288, 480);
-    Blinky ghostBlinky(320, 140);
-    Pinky ghostPinky(120, 200);
-    Inky ghostInky(320, 320);
-    Clyde ghostClyde(180, 175);
-    gameMap.loadMap("map.txt", mapa);
+    Blinky ghostBlinky(64, 32);
+    Pinky ghostPinky(32, 32);
+    Inky ghostInky(96, 32);
+    Clyde ghostClyde(128, 32);
 
     al_play_sample(sample1, 0.5, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
+    gameMap.loadMap("map.txt", mapa);
 
     while (running) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
-        // Player functions
         player.calculateEntityPosition();
         player.checkCoinCollision(mapa);
         player.checkTeleportCollisionLeft(mapa);
         player.checkTeleportCollisionRight(mapa);
+        ghostBlinky.calculateEntityPosition();
+        ghostPinky.calculateEntityPosition();
+        ghostInky.calculateEntityPosition();
+        ghostClyde.calculateEntityPosition();
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             // Timer to change the bitmap, used for animating PACMAN
@@ -197,7 +200,8 @@ int main(void) {
                 
             // More player functions, these are responsible for checking if the next movement is valid and executing it, respectively
             player.checkEntityMovement(nextMove, mapa);
-            player.moveEntity(mapa, sample2);
+            player.moveEntity(mapa);
+            ghostClyde.moveEntity(mapa);
 
             redraw = true;
         }
@@ -216,6 +220,9 @@ int main(void) {
             gameMap.renderMap(mapa);
             player.renderPacman(pacman_sprite, sprite);
             ghostBlinky.renderBlinky(blinky_sprite, sprite);
+            ghostInky.renderInky(inky_sprite, sprite);
+            ghostPinky.renderPinky(pinky_sprite, sprite);
+            ghostClyde.renderClyde(clyde_sprite, sprite);
             al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", player.getScore());
             al_flip_display();
         }
@@ -238,6 +245,10 @@ int main(void) {
     al_destroy_sample(sample2);
     al_uninstall_audio();
     al_destroy_bitmap(pacman_sprite);
+    al_destroy_bitmap(blinky_sprite);
+    al_destroy_bitmap(pinky_sprite);
+    al_destroy_bitmap(inky_sprite);
+    al_destroy_bitmap(clyde_sprite);
     al_destroy_font(font);
     al_destroy_display(display);
     al_destroy_timer(timer);

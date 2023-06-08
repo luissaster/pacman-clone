@@ -2,22 +2,17 @@
 #define GHOST_H
 
 #include "entity.h"
+#include "pacman.h"
+#include <cstdlib>
+#include <ctime>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
-
-enum ghostState {
-	WANDER,
-	CHASE,
-	SCATTER,
-	DEAD,
-	ANGRY
-};
 
 class Ghost : public Entity {
 public:
 	Ghost();
 	~Ghost();
-private:
+protected:
 };
 
 #endif // !GHOST_H
