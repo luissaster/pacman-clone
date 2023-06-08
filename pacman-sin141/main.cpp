@@ -154,10 +154,10 @@ int main(void) {
     // Objects
     Map gameMap;
     Pacman player(288, 480);
-    Blinky ghostBlinky(320, 32);
-    Pinky ghostPinky(288, 480);
-    Inky ghostInky(224, 32);
-    Clyde ghostClyde(128, 32);
+    Blinky ghostBlinky(256, 288);
+    Pinky ghostPinky(320, 288);
+    Inky ghostInky(288, 288);
+    Clyde ghostClyde(288, 256);
 
     al_play_sample(sample1, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
     gameMap.loadMap("map.txt", mapa);
@@ -168,8 +168,18 @@ int main(void) {
         tempo = al_get_timer_count(timer);
         player.calculateEntityPosition();
         player.checkCoinCollision(mapa);
+
         player.checkTeleportCollisionLeft(mapa);
         player.checkTeleportCollisionRight(mapa);
+        ghostClyde.checkTeleportCollisionLeft(mapa);
+        ghostClyde.checkTeleportCollisionRight(mapa);
+        ghostBlinky.checkTeleportCollisionLeft(mapa);
+        ghostBlinky.checkTeleportCollisionRight(mapa);
+        ghostPinky.checkTeleportCollisionLeft(mapa);
+        ghostPinky.checkTeleportCollisionRight(mapa);
+        ghostInky.checkTeleportCollisionLeft(mapa);
+        ghostInky.checkTeleportCollisionRight(mapa);
+
         ghostBlinky.calculateEntityPosition();
         ghostPinky.calculateEntityPosition();
         ghostInky.calculateEntityPosition();
@@ -238,6 +248,10 @@ int main(void) {
         if (player.getScore() == 151) {
             running = false;
         }
+        if (player.checkGhostCollision(ghostBlinky, ghostPinky, ghostInky, ghostClyde)) {
+            running = false;
+        }
+
     }
 
     // Cleaning: if u create something, don't forget to destroy it

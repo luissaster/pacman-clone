@@ -2,7 +2,6 @@
 #define GHOST_H
 
 #include "entity.h"
-#include "pacman.h"
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
