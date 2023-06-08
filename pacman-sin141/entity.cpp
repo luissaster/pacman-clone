@@ -108,14 +108,26 @@ void Entity::moveEntity(std::vector<std::vector<char>>& map) {
     if (moveUp && checkEntityCollisionUp(map)) {
         setEntityYPosition(getEntityY() - moveSpeed);
     }
+    else {
+        moveUp = false;
+    }
     if (moveDown && checkEntityCollisionDown(map)) {
         setEntityYPosition(getEntityY() + moveSpeed);
+    }
+    else {
+        moveDown = false;
     }
     if (moveLeft && checkEntityCollisionLeft(map)) {
         setEntityXPosition(getEntityX() - moveSpeed);
     }
+    else {
+        moveLeft = false;
+    }
     if (moveRight && checkEntityCollisionRight(map)) {
         setEntityXPosition(getEntityX() + moveSpeed);
+    }
+    else {
+        moveRight = false;
     }
     calculateEntityPosition();
 }

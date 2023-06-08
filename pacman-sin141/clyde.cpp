@@ -2,7 +2,6 @@
 Clyde::Clyde(int x, int y) : Ghost() {
 	entityX = x;
 	entityY = y;
-	moveRight = true;
 }
 Clyde::~Clyde() {}
 void Clyde::renderClyde(ALLEGRO_BITMAP* imgClyde, int sprite) {

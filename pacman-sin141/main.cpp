@@ -154,12 +154,12 @@ int main(void) {
     // Objects
     Map gameMap;
     Pacman player(288, 480);
-    Blinky ghostBlinky(64, 32);
-    Pinky ghostPinky(32, 32);
-    Inky ghostInky(96, 32);
+    Blinky ghostBlinky(320, 32);
+    Pinky ghostPinky(288, 480);
+    Inky ghostInky(224, 32);
     Clyde ghostClyde(128, 32);
 
-    al_play_sample(sample1, 0.5, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
+    al_play_sample(sample1, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
     gameMap.loadMap("map.txt", mapa);
 
     while (running) {
@@ -201,7 +201,10 @@ int main(void) {
             // More player functions, these are responsible for checking if the next movement is valid and executing it, respectively
             player.checkEntityMovement(nextMove, mapa);
             player.moveEntity(mapa);
-            ghostClyde.moveEntity(mapa);
+            ghostBlinky.moveRandom(mapa);
+            ghostPinky.moveRandom(mapa);
+            ghostInky.moveRandom(mapa);
+            ghostClyde.moveRandom(mapa);
 
             redraw = true;
         }
@@ -230,7 +233,6 @@ int main(void) {
         // End the game when closing the window
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
-            break;
         }
         // End the game when there's no more coins left
         if (player.getScore() == 151) {

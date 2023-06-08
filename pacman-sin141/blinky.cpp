@@ -1,6 +1,5 @@
 #include "blinky.h"
 Blinky::Blinky(int x, int y) : Ghost() {
-    moveSpeed = 1.0;
 	entityX = x;
 	entityY = y;
 }
