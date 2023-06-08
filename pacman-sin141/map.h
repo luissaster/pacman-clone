@@ -1,24 +1,22 @@
 #ifndef MAP_H
 #define MAP_H
-
 #include "wall.h"
 #include "coin.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 
-void renderMap(std::vector<std::vector<char>>& mapa) {
-    Wall wall_obj; 
-    Coin coin_obj; 
-    int height = mapa.size();
-    int width = mapa[0].size();
-    int i, j;
-    for (i = 0; i < width; i++) {
-        for (j = 0; j < height; j++) {
-            if (mapa[j][i] == '0') {
-                wall_obj.renderWall(j, i);
-            }
-            if (mapa[j][i] == '1') {
-                coin_obj.renderCoin(j, i);
-            }
-        }
-    }
-}
+class Map
+{
+public:
+    Map();
+    ~Map();
+    void loadMap(const char* archiveName, std::vector<std::vector<char>>& mapa);
+    void renderMap(std::vector<std::vector<char>>& mapa);
+
+private:
+
+};
+
 #endif // !MAP_H

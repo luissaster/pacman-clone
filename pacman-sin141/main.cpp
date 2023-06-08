@@ -1,7 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_audio.h>
@@ -19,26 +16,6 @@
 #define PACMAN_CHOMP "sounds/pacmanChomp.wav"
 #define FPS 60
 
-void loadMap(const char* archiveName, std::vector<std::vector<char>>& mapa) { // vetor de vetores = matriz, utilizado para carregar as informacoes no txt do mapa
-    std::ifstream arquivo(archiveName);
-    std::string linha;
-
-    if (arquivo.is_open()) {
-        while (getline(arquivo, linha)) {
-            std::vector<char> linhaMapa;
-            for (char caractere : linha) {
-                if (caractere != ' ') {
-                    linhaMapa.push_back(caractere);
-                }
-            }
-            mapa.push_back(linhaMapa);
-        }
-        arquivo.close();
-    }
-    else {
-        std::cout << "Error while opening the map file." << std::endl;
-    }
-}
 int main(void) {
     // Initializations
     al_init();
@@ -66,9 +43,7 @@ int main(void) {
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);  // 60 frames per second
     al_reserve_samples(2); // Quantity of sounds
-    // Load the map
-    std::vector<std::vector<char>> mapa;
-    loadMap("map.txt", mapa);
+    std::vector<std::vector<char>> mapa; // Create the map array
 
     // Check initializations
     if (!al_init()) {
@@ -153,8 +128,10 @@ int main(void) {
     bool teclas[255] = { false }; // Store player's input
     int sprite = 0, fator = 1, tempo, miliseg = 200; // Used for animations
     bool redraw = true; // Game's condition to redraw ("refresh") the screen
-    int proximaInstrucao = 0; // Player's next intended movement
+    int nextMove = 0; // Player's next intended movement
     Pacman player(288, 480); // Starts the player somewhere close to the centre, TBH I don't remember where the player starts in the OG PacMan
+    Map gameMap; // Create the map object
+    gameMap.loadMap("map.txt", mapa); // Load the map
     al_play_sample(sample1, 0.5, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
 
     while (running) {
@@ -162,7 +139,7 @@ int main(void) {
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
         // Player functions
-        player.calculatePacmanPosition();
+        player.calculateEntityPosition();
         player.checkCoinCollision(mapa);
         player.checkTeleportCollisionLeft(mapa);
         player.checkTeleportCollisionRight(mapa);
@@ -178,21 +155,21 @@ int main(void) {
 
             // Receive the command and store it until it can be executed
             if (teclas[ALLEGRO_KEY_UP]) {
-                proximaInstrucao = ALLEGRO_KEY_UP;
+                nextMove = ALLEGRO_KEY_UP;
             }
             if (teclas[ALLEGRO_KEY_DOWN]) {
-                proximaInstrucao = ALLEGRO_KEY_DOWN;
+                nextMove = ALLEGRO_KEY_DOWN;
             }
             if (teclas[ALLEGRO_KEY_LEFT]) {
-                proximaInstrucao = ALLEGRO_KEY_LEFT;
+                nextMove = ALLEGRO_KEY_LEFT;
             }
             if (teclas[ALLEGRO_KEY_RIGHT]) {
-                proximaInstrucao = ALLEGRO_KEY_RIGHT;
+                nextMove = ALLEGRO_KEY_RIGHT;
             }
                 
             // More player functions, these are responsible for checking if the next movement is valid and executing it, respectively
-            player.checkPacmanMovement(proximaInstrucao, mapa);
-            player.movePacman(mapa, sample2);
+            player.checkEntityMovement(nextMove, mapa);
+            player.moveEntity(mapa, sample2);
 
             redraw = true;
         }
@@ -208,7 +185,7 @@ int main(void) {
         if (redraw && al_is_event_queue_empty(queue)) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            renderMap(mapa);
+            gameMap.renderMap(mapa);
             player.renderPacman(pacman_sprite, sprite);
             al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", player.getScore());
             al_flip_display();
