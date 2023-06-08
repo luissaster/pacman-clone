@@ -24,6 +24,8 @@ public:
     void setEntityYPosition(float y);
     void checkEntityMovement(int instruction, std::vector<std::vector<char>>& map);
     void moveEntity(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* chomp);
+    void checkTeleportCollisionLeft(std::vector<std::vector<char>>& map);
+    void checkTeleportCollisionRight(std::vector<std::vector<char>>& map);
 protected:
     float moveSpeed, entityX, entityY;
     bool moveUp, moveDown, moveLeft, moveRight;

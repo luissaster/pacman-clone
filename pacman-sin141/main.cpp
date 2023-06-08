@@ -9,8 +9,17 @@
 #include <allegro5/allegro_primitives.h>
 #include "map.h"
 #include "pacman.h"
+#include "ghost.h"
+#include "blinky.h"
+#include "pinky.h"
+#include "inky.h"
+#include "clyde.h"
 
 #define PACMAN_SPRITE "sprites/pacman.png"
+#define BLINKY_SPRITE "sprites/blinky.png"
+#define PINKY_SPRITE "sprites/pinky.png"
+#define INKY_SPRITE "sprites/inky.png"
+#define CLYDE_SPRITE "sprites/clyde.png"
 #define FONT "fonts/arial.ttf"
 #define MAIN_SONG "sounds/mainTheme.mp3"
 #define PACMAN_CHOMP "sounds/pacmanChomp.wav"
@@ -31,6 +40,10 @@ int main(void) {
     ALLEGRO_EVENT_QUEUE* queue = NULL;
     ALLEGRO_TIMER* timer = NULL;
     ALLEGRO_BITMAP* pacman_sprite = NULL;
+    ALLEGRO_BITMAP* blinky_sprite = NULL;
+    ALLEGRO_BITMAP* pinky_sprite = NULL;
+    ALLEGRO_BITMAP* inky_sprite = NULL;
+    ALLEGRO_BITMAP* clyde_sprite = NULL;
     ALLEGRO_FONT* font = NULL;
     ALLEGRO_SAMPLE* sample1 = NULL; // main song
     ALLEGRO_SAMPLE* sample2 = NULL; // pacman walk sound
@@ -38,6 +51,10 @@ int main(void) {
     sample1 = al_load_sample(MAIN_SONG);
     sample2 = al_load_sample(PACMAN_CHOMP);
     pacman_sprite = al_load_bitmap(PACMAN_SPRITE);
+    blinky_sprite = al_load_bitmap(BLINKY_SPRITE);
+    pinky_sprite = al_load_bitmap(PINKY_SPRITE);
+    inky_sprite = al_load_bitmap(INKY_SPRITE);
+    clyde_sprite = al_load_bitmap(CLYDE_SPRITE);
     font = al_load_font(FONT, 24, 0);
     display = al_create_display(608, 672); // Number of walls in a row/column * 32 (sprite size)
     queue = al_create_event_queue();
@@ -46,75 +63,79 @@ int main(void) {
     std::vector<std::vector<char>> mapa; // Create the map array
 
     // Check initializations
-    if (!al_init()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize Allegro!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!al_init_image_addon()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_image_addon!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!al_init_ttf_addon()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_ttf_addon!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!al_init_font_addon()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_font_addon!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!al_init_acodec_addon()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_acodec_addon!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!al_install_audio()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to install audio!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!al_install_keyboard()) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to install keyboard!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!display) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to create display!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!queue) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to create event queue!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!timer) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to create timer!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!pacman_sprite) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/pacman.png!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if(!font){
-        al_show_native_message_box(display, "Error", "Error", "Failed to load fonts/arial.ttf!",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!sample1) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to load songs/mainTheme.mp3",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
-    }
-    if (!sample2) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to load songs/pacmanChomp.wav",
-            NULL, ALLEGRO_MESSAGEBOX_ERROR);
-        return 0;
+    bool isStarting = true;
+    while(isStarting){
+        if (!al_init()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize Allegro!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!al_init_image_addon()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_image_addon!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!al_init_ttf_addon()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_ttf_addon!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!al_init_font_addon()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_font_addon!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!al_init_acodec_addon()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize al_init_acodec_addon!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!al_install_audio()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to install audio!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!al_install_keyboard()) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to install keyboard!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!display) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to create display!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!queue) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to create event queue!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!timer) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to create timer!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!pacman_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/pacman.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!font) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load fonts/arial.ttf!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!sample1) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load songs/mainTheme.mp3",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        if (!sample2) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load songs/pacmanChomp.wav",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
+        isStarting = false;
     }
 
     // Registering
@@ -124,14 +145,21 @@ int main(void) {
     al_start_timer(timer);
 
     // Variables 
-    bool running = true; // Game's main loop
-    bool teclas[255] = { false }; // Store player's input
-    int sprite = 0, fator = 1, tempo, miliseg = 200; // Used for animations
-    bool redraw = true; // Game's condition to redraw ("refresh") the screen
-    int nextMove = 0; // Player's next intended movement
-    Pacman player(288, 480); // Starts the player somewhere close to the centre, TBH I don't remember where the player starts in the OG PacMan
-    Map gameMap; // Create the map object
-    gameMap.loadMap("map.txt", mapa); // Load the map
+    bool running = true;
+    bool teclas[255] = { false };
+    int sprite = 0, fator = 1, tempo, miliseg = 200;
+    bool redraw = true;
+    int nextMove = 0;
+
+    // Objects
+    Map gameMap;
+    Pacman player(288, 480);
+    Blinky ghostBlinky(320, 140);
+    Pinky ghostPinky(120, 200);
+    Inky ghostInky(320, 320);
+    Clyde ghostClyde(180, 175);
+    gameMap.loadMap("map.txt", mapa);
+
     al_play_sample(sample1, 0.5, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
 
     while (running) {
@@ -187,6 +215,7 @@ int main(void) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             gameMap.renderMap(mapa);
             player.renderPacman(pacman_sprite, sprite);
+            ghostBlinky.renderBlinky(blinky_sprite, sprite);
             al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", player.getScore());
             al_flip_display();
         }

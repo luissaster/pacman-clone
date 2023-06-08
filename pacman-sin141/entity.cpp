@@ -120,3 +120,23 @@ void Entity::moveEntity(std::vector<std::vector<char>>& map, ALLEGRO_SAMPLE* cho
     }
     calculateEntityPosition();
 }
+void Entity::checkTeleportCollisionLeft(std::vector<std::vector<char>>& map) {
+    if (getEntityConvertedY() == 9 && getEntityConvertedX() == 0 && moveLeft == true) {
+        this->setEntityXPosition(576);
+        this->setEntityYPosition(288);
+        moveLeft = true;
+        moveRight = false;
+        moveUp = false;
+        moveDown = false;
+    }
+}
+void Entity::checkTeleportCollisionRight(std::vector<std::vector<char>>& map) {
+    if (getEntityConvertedY() == 9 && getEntityConvertedX() == 17 && moveRight == true) {
+        this->setEntityXPosition(0);
+        this->setEntityYPosition(288);
+        moveLeft = false;
+        moveRight = true;
+        moveUp = false;
+        moveDown = false;
+    }
+}

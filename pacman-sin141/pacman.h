@@ -13,8 +13,6 @@ public:
     ~Pacman();
     int getScore();
     void checkCoinCollision(std::vector<std::vector<char>>& map);
-    void checkTeleportCollisionLeft(std::vector<std::vector<char>>& map);
-    void checkTeleportCollisionRight(std::vector<std::vector<char>>& map);
     void renderPacman(ALLEGRO_BITMAP* imgPacman, int sprite);
 private:
     int score;

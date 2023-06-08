@@ -140,18 +140,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="blinky.cpp" />
+    <ClCompile Include="clyde.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="ghost.cpp" />
+    <ClCompile Include="inky.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="pacman.cpp" />
+    <ClCompile Include="pinky.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blinky.h" />
+    <ClInclude Include="clyde.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="ghost.h" />
+    <ClInclude Include="inky.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="pacman.h" />
+    <ClInclude Include="pinky.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
