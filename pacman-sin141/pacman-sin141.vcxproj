@@ -140,22 +140,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="blinky.cpp" />
+    <ClCompile Include="clyde.cpp" />
     <ClCompile Include="coin.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="ghost.cpp" />
+    <ClCompile Include="inky.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="pacman.cpp" />
+    <ClCompile Include="pinky.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blinky.h" />
+    <ClInclude Include="clyde.h" />
     <ClInclude Include="coin.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="ghost.h" />
+    <ClInclude Include="inky.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="pacman.h" />
+    <ClInclude Include="pinky.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Text Include="map.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="map.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
@@ -164,7 +177,7 @@
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>Este projeto faz referência a pacotes do NuGet que não estão presentes neste computador. Use a Restauração de Pacotes do NuGet para baixá-los.  Para obter mais informações, consulte http://go.microsoft.com/fwlink/?LinkID=322105. O arquivo ausente é {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\AllegroDeps.1.13.0\build\native\AllegroDeps.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AllegroDeps.1.13.0\build\native\AllegroDeps.targets'))" />
     <Error Condition="!Exists('..\packages\Allegro.5.2.8\build\native\Allegro.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Allegro.5.2.8\build\native\Allegro.targets'))" />
