@@ -62,7 +62,7 @@ int main(void) {
     display = al_create_display(608, 672); // Number of walls in a row/column * 32 (sprite size)
     queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);  // 60 frames per second
-    al_reserve_samples(2); // Quantity of sounds
+    al_reserve_samples(3); // Quantity of sounds
     std::vector<std::vector<char>> mapa; // Create the map array
 
     // Check initializations
