@@ -20,6 +20,7 @@
 #define PINKY_SPRITE "sprites/pinky.png"
 #define INKY_SPRITE "sprites/inky.png"
 #define CLYDE_SPRITE "sprites/clyde.png"
+#define MAP_SPRITE "sprites/mapaoverlay.png"
 #define FONT "fonts/arial.ttf"
 #define MAIN_SONG "sounds/mainTheme.mp3"
 #define PACMAN_CHOMP "sounds/pacmanChomp.wav"
@@ -37,32 +38,22 @@ int main(void) {
     al_install_keyboard();
 
     // Definitions - remember to always clean everything in the end of main
-    ALLEGRO_DISPLAY* display = NULL; 
-    ALLEGRO_EVENT_QUEUE* queue = NULL;
-    ALLEGRO_TIMER* timer = NULL;
-    ALLEGRO_BITMAP* pacman_sprite = NULL;
-    ALLEGRO_BITMAP* blinky_sprite = NULL;
-    ALLEGRO_BITMAP* pinky_sprite = NULL;
-    ALLEGRO_BITMAP* inky_sprite = NULL;
-    ALLEGRO_BITMAP* clyde_sprite = NULL;
-    ALLEGRO_FONT* font = NULL;
-    ALLEGRO_SAMPLE* mainSongAudio = NULL; 
-    ALLEGRO_SAMPLE* pacmanEatAudio = NULL;
-    ALLEGRO_SAMPLE* pacmanDiesAudio = NULL; 
+    ALLEGRO_DISPLAY* display = al_create_display(608, 672); // Number of walls in a row/column * 32 (sprite size); 
+    ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();;
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);  // 60 frames per second;
+    ALLEGRO_BITMAP* pacman_sprite = al_load_bitmap(PACMAN_SPRITE);;
+    ALLEGRO_BITMAP* blinky_sprite = al_load_bitmap(BLINKY_SPRITE);;
+    ALLEGRO_BITMAP* pinky_sprite = al_load_bitmap(PINKY_SPRITE);;
+    ALLEGRO_BITMAP* inky_sprite = al_load_bitmap(INKY_SPRITE);;
+    ALLEGRO_BITMAP* clyde_sprite = al_load_bitmap(CLYDE_SPRITE);;
+    ALLEGRO_BITMAP* map_sprite = al_load_bitmap(MAP_SPRITE);
+    ALLEGRO_FONT* font = al_load_font(FONT, 24, 0);;
+    ALLEGRO_SAMPLE* mainSongAudio = al_load_sample(MAIN_SONG);;
+    ALLEGRO_SAMPLE* pacmanEatAudio = al_load_sample(PACMAN_CHOMP);;
+    ALLEGRO_SAMPLE* pacmanDiesAudio = al_load_sample(PACMAN_DEATH_SOUND);;
     ALLEGRO_SAMPLE_ID mainSongID;
-    mainSongAudio = al_load_sample(MAIN_SONG);
-    pacmanEatAudio = al_load_sample(PACMAN_CHOMP);
-    pacmanDiesAudio = al_load_sample(PACMAN_DEATH_SOUND);
-    pacman_sprite = al_load_bitmap(PACMAN_SPRITE);
-    blinky_sprite = al_load_bitmap(BLINKY_SPRITE);
-    pinky_sprite = al_load_bitmap(PINKY_SPRITE);
-    inky_sprite = al_load_bitmap(INKY_SPRITE);
-    clyde_sprite = al_load_bitmap(CLYDE_SPRITE);
-    font = al_load_font(FONT, 24, 0);
-    display = al_create_display(608, 672); // Number of walls in a row/column * 32 (sprite size)
-    queue = al_create_event_queue();
-    timer = al_create_timer(1.0 / FPS);  // 60 frames per second
-    al_reserve_samples(2); // Quantity of sounds
+
+    al_reserve_samples(3); // Quantity of sounds
     std::vector<std::vector<char>> mapa; // Create the map array
 
     // Check initializations
@@ -181,7 +172,7 @@ int main(void) {
 
     // Objects
     Map gameMap;
-    Pacman player(288, 480);
+    Pacman playerPacman(288, 480);
     Blinky ghostBlinky(256, 288);
     Pinky ghostPinky(320, 288);
     Inky ghostInky(288, 288);
@@ -199,12 +190,13 @@ int main(void) {
         ghostPinky.calculateEntityPosition();
         ghostInky.calculateEntityPosition();
         ghostClyde.calculateEntityPosition();
-        player.calculateEntityPosition();
+        playerPacman.calculateEntityPosition();
 
-        player.checkCoinCollision(mapa, pacmanEatAudio);
+        playerPacman.checkCoinCollision(mapa, pacmanEatAudio);
 
-        player.checkTeleportCollisionLeft(mapa);
-        player.checkTeleportCollisionRight(mapa);
+        //TODO: Unify left and right check teleport functions
+        playerPacman.checkTeleportCollisionLeft(mapa);
+        playerPacman.checkTeleportCollisionRight(mapa);
         ghostClyde.checkTeleportCollisionLeft(mapa);
         ghostClyde.checkTeleportCollisionRight(mapa);
         ghostBlinky.checkTeleportCollisionLeft(mapa);
@@ -237,8 +229,8 @@ int main(void) {
                 nextMove = ALLEGRO_KEY_RIGHT;
             }
 
-            player.checkEntityMovement(nextMove, mapa);
-            player.moveEntity(mapa);
+            playerPacman.checkEntityMovement(nextMove, mapa);
+            playerPacman.moveEntity(mapa);
             ghostBlinky.moveRandom(mapa);
             ghostPinky.moveRandom(mapa);
             ghostInky.moveRandom(mapa);
@@ -259,23 +251,25 @@ int main(void) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
             gameMap.renderMap(mapa);
-            player.renderPacman(pacman_sprite, sprite);
+            al_draw_bitmap(map_sprite, 0, -32, 0);
+            playerPacman.renderPacman(pacman_sprite, sprite);
             ghostBlinky.renderBlinky(blinky_sprite, sprite);
             ghostInky.renderInky(inky_sprite, sprite);
             ghostPinky.renderPinky(pinky_sprite, sprite);
             ghostClyde.renderClyde(clyde_sprite, sprite);
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", player.getScore());
+            al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", playerPacman.getScore());
             al_flip_display();
         }
-        // End the game when closing the window
+
+        //CLOSING CONDITIONS
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
         }
         // End the game when there's no more coins left
-        if (player.getScore() == 151) {
+        if (playerPacman.getScore() == 151) {
             running = false;
         }
-        if (player.checkGhostCollision(ghostBlinky, ghostPinky, ghostInky, ghostClyde)) {
+        if (playerPacman.checkGhostCollision(ghostBlinky, ghostPinky, ghostInky, ghostClyde)) {
             al_stop_sample(&mainSongID);
             al_play_sample(pacmanDiesAudio, 0.6, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
             al_rest(3);

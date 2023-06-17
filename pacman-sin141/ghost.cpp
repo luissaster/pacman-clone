@@ -7,162 +7,182 @@ Ghost::Ghost() {
     randomDirection = 0;
 }
 Ghost::~Ghost() {}
-void Ghost::newDirection(std::vector<std::vector<char>> mapa) {
-    bool podeCima, podeBaixo, podeEsquerda, podeDireita;
-    if (checkEntityCollisionUp(mapa)) {
-        podeCima = true;
+void Ghost::newDirection(std::vector<std::vector<char>> map) {
+    bool canGoUp, canGoDown, canGoLeft, canGoRight;
+
+    if (checkEntityCollisionUp(map)) {
+        canGoUp = true;
     }
     else {
-        podeCima = false;
+        canGoUp = false;
     }
-    if (checkEntityCollisionDown(mapa)) {
-        podeBaixo = true;
-    }
-    else {
-        podeBaixo = false;
-    }
-    if (checkEntityCollisionLeft(mapa)) {
-        podeEsquerda = true;
+
+    if (checkEntityCollisionDown(map)) {
+        canGoDown = true;
     }
     else {
-        podeEsquerda = false;
+        canGoDown = false;
     }
-    if (checkEntityCollisionRight(mapa)) {
-        podeDireita = true;
+
+    if (checkEntityCollisionLeft(map)) {
+        canGoLeft = true;
     }
     else {
-        podeDireita = false;
+        canGoLeft = false;
     }
-    if (podeEsquerda && !podeDireita && !podeCima && !podeBaixo) {
-        checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+
+    if (checkEntityCollisionRight(map)) {
+        canGoRight = true;
     }
-    if (!podeEsquerda && podeDireita && !podeCima && !podeBaixo) {
-        checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+    else {
+        canGoRight = false;
     }
-    if (!podeEsquerda && !podeDireita && podeCima && !podeBaixo) {
-        checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+
+    if (canGoLeft && !canGoRight && !canGoUp && !canGoDown) {
+        checkEntityMovement(ALLEGRO_KEY_LEFT, map);
     }
-    if (!podeEsquerda && !podeDireita && !podeCima && podeBaixo) {
-        checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+
+    if (!canGoLeft && canGoRight && !canGoUp && !canGoDown) {
+        checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
     }
-    if (podeCima && podeEsquerda) {
-        randomDirection = std::rand() % 2;
+
+    if (!canGoLeft && !canGoRight && canGoUp && !canGoDown) {
+        checkEntityMovement(ALLEGRO_KEY_UP, map);
+    }
+
+    if (!canGoLeft && !canGoRight && !canGoUp && canGoDown) {
+        checkEntityMovement(ALLEGRO_KEY_DOWN, map);
+    }
+
+    if (canGoUp && canGoLeft) {
+        int randomDirection = std::rand() % 2;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
     }
-    if (podeCima && podeBaixo) {
-        randomDirection = std::rand() % 2;
+
+    if (canGoUp && canGoDown) {
+        int randomDirection = std::rand() % 2;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
     }
-    if (podeCima && podeDireita) {
-        randomDirection = std::rand() % 2;
+
+    if (canGoUp && canGoRight) {
+        int randomDirection = std::rand() % 2;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
     }
-    if (podeBaixo && podeEsquerda) {
-        randomDirection = std::rand() % 2;
+
+    if (canGoDown && canGoLeft) {
+        int randomDirection = std::rand() % 2;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
     }
-    if (podeBaixo && podeDireita) {
-        randomDirection = std::rand() % 2;
+
+    if (canGoDown && canGoRight) {
+        int randomDirection = std::rand() % 2;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
     }
-    if (podeEsquerda && podeDireita) {
-        randomDirection = std::rand() % 2;
+
+    if (canGoLeft && canGoRight) {
+        int randomDirection = std::rand() % 2;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
     }
-    if (podeCima && podeEsquerda && podeDireita) {
-        randomDirection = std::rand() % 3;
+
+    if (canGoUp && canGoLeft && canGoRight) {
+        int randomDirection = std::rand() % 3;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else if (randomDirection == 1) {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
     }
-    if (podeCima && podeEsquerda && podeBaixo) {
-        randomDirection = std::rand() % 3;
+
+    if (canGoUp && canGoLeft && canGoDown) {
+        int randomDirection = std::rand() % 3;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else if (randomDirection == 1) {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
     }
-    if (podeCima && podeDireita && podeBaixo) {
-        randomDirection = std::rand() % 3;
+
+    if (canGoUp && canGoRight && canGoDown) {
+        int randomDirection = std::rand() % 3;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else if (randomDirection == 1) {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
     }
-    if (podeBaixo && podeEsquerda && podeDireita) {
-        randomDirection = std::rand() % 3;
+
+    if (canGoDown && canGoLeft && canGoRight) {
+        int randomDirection = std::rand() % 3;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
         else if (randomDirection == 1) {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
     }
-    if (podeBaixo && podeCima && podeEsquerda && podeDireita) {
-        randomDirection = std::rand() % 4;
+
+    if (canGoDown && canGoUp && canGoLeft && canGoRight) {
+        int randomDirection = std::rand() % 4;
         if (randomDirection == 0) {
-            checkEntityMovement(ALLEGRO_KEY_DOWN, mapa);
+            checkEntityMovement(ALLEGRO_KEY_DOWN, map);
         }
         else if (randomDirection == 1) {
-            checkEntityMovement(ALLEGRO_KEY_UP, mapa);
+            checkEntityMovement(ALLEGRO_KEY_UP, map);
         }
         else if (randomDirection == 2) {
-            checkEntityMovement(ALLEGRO_KEY_LEFT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_LEFT, map);
         }
         else {
-            checkEntityMovement(ALLEGRO_KEY_RIGHT, mapa);
+            checkEntityMovement(ALLEGRO_KEY_RIGHT, map);
         }
     }
 }
+
 void Ghost::moveRandom(std::vector<std::vector<char>> mapa) {
     // se nao encontrar parede nem cruzamento = continua andando
     // se bater numa parede na direção que estava indo, sorteia uma direção nova diferente da atual
