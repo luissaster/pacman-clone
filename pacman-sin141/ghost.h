@@ -12,7 +12,7 @@ class Ghost : public Entity {
 public:
 	Ghost();
 	~Ghost();
-	virtual void chasePacman(std::vector<std::vector<char>> mapa, float pacmanX, float pacmanY) = 0;
+	virtual void chasePacman(std::vector<std::vector<char>> mapa, int pacmanX, int pacmanY) = 0;
 	virtual void randomDirection(std::vector<std::vector<char>> mapa);
 	virtual void checkRandomDirection(std::vector<std::vector<char>> mapa);
 	virtual void renderGhost(ALLEGRO_BITMAP* img, int sprite) = 0;

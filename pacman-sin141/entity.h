@@ -19,6 +19,7 @@ public:
     float getEntityY();
     int getEntityConvertedX();
     int getEntityConvertedY();
+    int getCurrentMove();
     int getNextMove();
     void setNextMove(int);
     void calculateEntityPosition();

@@ -7,9 +7,6 @@ Ghost::Ghost() {
     ghostType = 0;
 }
 Ghost::~Ghost() {}
-void Ghost::chasePacman(std::vector<std::vector<char>> mapa, float pacmanX, float pacmanY)
-{
-}
 void Ghost::randomDirection(std::vector<std::vector<char>> map) {
     int flag = 0;
     int possibilities = 0;

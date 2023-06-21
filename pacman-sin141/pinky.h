@@ -8,7 +8,7 @@ public:
 	Pinky(int x, int y);
 	~Pinky();
 	virtual void renderGhost(ALLEGRO_BITMAP* img, int sprite);
-	virtual void chasePacman(std::vector<std::vector<char>> mapa, float pacmanX, float pacmanY);
+	virtual void chasePacman(std::vector<std::vector<char>> mapa, int pacmanX, int pacmanY);
 
 };
 

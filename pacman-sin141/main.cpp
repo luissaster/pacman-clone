@@ -172,7 +172,7 @@ int main(void) {
     // Objects
     Map gameMap;
     Pacman playerPacman(288, 480);
-    Blinky ghostBlinky(256, 288);
+    Blinky ghostBlinky(32, 32); //256, 288 <--- blinky's old spawn, spawning at 32,32 to avoid getting stuck in the spawn
     Pinky ghostPinky(320, 288);
     Inky ghostInky(288, 288);
     Clyde ghostClyde(288, 256);
@@ -197,7 +197,7 @@ int main(void) {
         playerPacman.checkEntityMovement(playerPacman.getNextMove(), mapa);
         playerPacman.moveEntity(mapa);
 
-
+        //Ghost functions, we only have Blinky (ghostVet[3]) in chase mode
         for (int i = 0; i < 4; i++) {
             ghostVet[i]->calculateEntityPosition();
             ghostVet[i]->checkTeleportCollision(mapa);
@@ -207,8 +207,10 @@ int main(void) {
             ghostVet[i]->randomDirection(mapa);
             ghostVet[i]->moveEntity(mapa);
         }
-        ghostVet[3]->chasePacman(mapa, playerPacman.getEntityX(), playerPacman.getEntityY());
+        ghostVet[3]->chasePacman(mapa, playerPacman.getEntityConvertedX(), playerPacman.getEntityConvertedY());
+        ghostVet[3]->checkEntityMovement(ghostVet[3]->getNextMove(), mapa);
         ghostVet[3]->moveEntity(mapa);
+
         if (event.type == ALLEGRO_EVENT_TIMER) {
             // Timer to change the bitmap, used for animating PACMAN
             if (tempo == ((FPS * miliseg) / 1000) || tempo > ((FPS * miliseg) / 1000)) {
