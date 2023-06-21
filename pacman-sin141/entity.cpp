@@ -71,9 +71,10 @@ int Entity::getNextMove()
 {
     return this->nextMove;
 }
-void Entity::setNextMove(int a)
+void Entity::setNextMove(int a, std::vector<std::vector<char>>& map)
 {
     this->nextMove = a;
+    checkEntityMovement(nextMove, map);
 }
 float Entity::getEntityX() {
     return entityX;

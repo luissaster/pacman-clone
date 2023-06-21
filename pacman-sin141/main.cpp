@@ -172,10 +172,10 @@ int main(void) {
     // Objects
     Map gameMap;
     Pacman playerPacman(288, 480);
-    Blinky ghostBlinky(32, 32); //256, 288 <--- blinky's old spawn, spawning at 32,32 to avoid getting stuck in the spawn
+    Blinky ghostBlinky(288, 256); //256, 288 <--- blinky's old spawn, spawning at 32,32 to avoid getting stuck in the spawn
     Pinky ghostPinky(320, 288);
     Inky ghostInky(288, 288);
-    Clyde ghostClyde(288, 256);
+    Clyde ghostClyde(256, 288);
 
     al_play_sample(mainSongAudio, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
     gameMap.loadMap("map.txt", mapa);
@@ -197,6 +197,8 @@ int main(void) {
         playerPacman.checkEntityMovement(playerPacman.getNextMove(), mapa);
         playerPacman.moveEntity(mapa);
 
+        std::cout << "[" << playerPacman.getEntityConvertedX() << "][" << playerPacman.getEntityConvertedY() << "]" << std::endl;
+
         //Ghost functions, we only have Blinky (ghostVet[3]) in chase mode
         for (int i = 0; i < 4; i++) {
             ghostVet[i]->calculateEntityPosition();
@@ -207,6 +209,7 @@ int main(void) {
             ghostVet[i]->randomDirection(mapa);
             ghostVet[i]->moveEntity(mapa);
         }
+
         ghostVet[3]->chasePacman(mapa, playerPacman.getEntityConvertedX(), playerPacman.getEntityConvertedY());
         ghostVet[3]->checkEntityMovement(ghostVet[3]->getNextMove(), mapa);
         ghostVet[3]->moveEntity(mapa);
@@ -222,16 +225,16 @@ int main(void) {
 
             // Receive the command and store it until it can be executed
             if (teclas[ALLEGRO_KEY_UP]) {
-                playerPacman.setNextMove(ALLEGRO_KEY_UP);
+                playerPacman.setNextMove(ALLEGRO_KEY_UP, mapa);
             }
             if (teclas[ALLEGRO_KEY_DOWN]) {
-                playerPacman.setNextMove(ALLEGRO_KEY_DOWN);
+                playerPacman.setNextMove(ALLEGRO_KEY_DOWN, mapa);
             }
             if (teclas[ALLEGRO_KEY_LEFT]) {
-                playerPacman.setNextMove(ALLEGRO_KEY_LEFT);
+                playerPacman.setNextMove(ALLEGRO_KEY_LEFT, mapa);
             }
             if (teclas[ALLEGRO_KEY_RIGHT]) {
-                playerPacman.setNextMove(ALLEGRO_KEY_RIGHT);
+                playerPacman.setNextMove(ALLEGRO_KEY_RIGHT, mapa);
             }
 
             redraw = true;

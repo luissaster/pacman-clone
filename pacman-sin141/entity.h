@@ -21,7 +21,7 @@ public:
     int getEntityConvertedY();
     int getCurrentMove();
     int getNextMove();
-    void setNextMove(int);
+    void setNextMove(int a, std::vector<std::vector<char>>& map);
     void calculateEntityPosition();
     void setEntityXPosition(float x);
     void setEntityYPosition(float y);
