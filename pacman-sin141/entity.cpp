@@ -73,8 +73,8 @@ int Entity::getNextMove()
 }
 void Entity::setNextMove(int a, std::vector<std::vector<char>>& map)
 {
+    checkEntityMovement(a, map);
     this->nextMove = a;
-    checkEntityMovement(nextMove, map);
 }
 float Entity::getEntityX() {
     return entityX;
@@ -146,7 +146,7 @@ void Entity::moveEntity(std::vector<std::vector<char>>& map) {
 }
 void Entity::checkTeleportCollision(std::vector<std::vector<char>>& map) {
     if (getEntityConvertedY() == 9 && getEntityConvertedX() == 0 && moveLeft) {
-        this->setEntityXPosition(544); //576
+        this->setEntityXPosition(544);
         this->setEntityYPosition(288);
     }
     else if (getEntityConvertedY() == 9 && getEntityConvertedX() == 17 && moveRight) {

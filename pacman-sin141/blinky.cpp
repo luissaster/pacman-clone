@@ -151,12 +151,12 @@ void Blinky::chasePacman(std::vector<std::vector<char>> map, int pacX, int pacY)
 			this->setNextMove(ALLEGRO_KEY_UP, map);
 			return;
 		}
-		else if (currentMove != UP && checkEntityCollisionDown(map)) {
-			this->setNextMove(ALLEGRO_KEY_DOWN, map);
-			return;
-		}
 		else if (currentMove != RIGHT && checkEntityCollisionLeft(map)) {
 			this->setNextMove(ALLEGRO_KEY_LEFT, map);
+			return;
+		}
+		else if (currentMove != UP && checkEntityCollisionDown(map)) {
+			this->setNextMove(ALLEGRO_KEY_DOWN, map);
 			return;
 		}
 	}

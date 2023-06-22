@@ -15,7 +15,22 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
     for (int i = 0; i < 4; i++) {
         directions[i] = 0;
     }
-
+    if (this->getEntityConvertedX() == 8 && this->getEntityConvertedY() == 9) {
+        this->setNextMove(ALLEGRO_KEY_RIGHT, map);
+        return;
+    }
+    else if (this->getEntityConvertedX() == 9 && this->getEntityConvertedY() == 9) {
+        this->setNextMove(ALLEGRO_KEY_UP, map);
+        return;
+    }
+    else if (this->getEntityConvertedX() == 10 && this->getEntityConvertedY() == 9) {
+        this->setNextMove(ALLEGRO_KEY_LEFT, map);
+        return;
+    }
+    else if (this->getEntityConvertedX() == 9 && this->getEntityConvertedY() == 8) {
+        this->setNextMove(ALLEGRO_KEY_UP, map);
+        return;
+    }
     if (moveLeft == true) {
         // Check for collision with entities on the left
         if (checkEntityCollisionLeft(map) == true) {
