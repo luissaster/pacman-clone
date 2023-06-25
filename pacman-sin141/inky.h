@@ -6,7 +6,8 @@ class Inky : public Ghost {
 public:
 	Inky(int x, int y);
 	~Inky();
-	void renderInky(ALLEGRO_BITMAP* imgInky, int sprite);
+	virtual void renderGhost(ALLEGRO_BITMAP* img, int sprite);
+	virtual void chasePacman(std::vector<std::vector<char>> mapa, int pacmanX, int pacmanY);
 };
 
 #endif // !INKY_H

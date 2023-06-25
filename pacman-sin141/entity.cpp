@@ -10,6 +10,7 @@ Entity::Entity() {
     entityWidth = 0;
     entitySize = 0;
     direction = 0;
+    nextMove = 0;
     moveUp = moveRight = moveDown = moveLeft = false;
     colYCollisionUp = colXCollisionUp = colYCollisionUpNext = colXCollisionUpNext = 0;
     colYCollisionLeft = colXCollisionLeft = colYCollisionLeftNext = colXCollisionLeftNext = 0;
@@ -42,7 +43,7 @@ void Entity::calculateEntityPosition() {
     colXCollisionBottomNext = entityX / entitySize;
 }
 bool Entity::checkWallCollision(std::vector<std::vector<char>>& map) {
-    return map[entityConvertedY][entityConvertedX] != 0;
+    return map[entityConvertedY][entityConvertedX] != '0';
 }
 bool Entity::checkEntityCollisionUp(std::vector<std::vector<char>>& map) {
     return map[colYCollisionUp - 1][colXCollisionUp] != '0' && map[colYCollisionUpNext - 1][colXCollisionUpNext] != '0';
@@ -61,6 +62,19 @@ int Entity::getEntityConvertedX() {
 }
 int Entity::getEntityConvertedY() {
     return entityConvertedY;
+}
+int Entity::getCurrentMove()
+{
+    return direction; // 0 - RIGHT, 1 - DOWN, 2 - LEFT, 3 - UP
+}
+int Entity::getNextMove()
+{
+    return this->nextMove;
+}
+void Entity::setNextMove(int a, std::vector<std::vector<char>>& map)
+{
+    checkEntityMovement(a, map);
+    this->nextMove = a;
 }
 float Entity::getEntityX() {
     return entityX;
@@ -129,25 +143,14 @@ void Entity::moveEntity(std::vector<std::vector<char>>& map) {
     else {
         moveRight = false;
     }
-    calculateEntityPosition();
 }
-void Entity::checkTeleportCollisionLeft(std::vector<std::vector<char>>& map) {
-    if (getEntityConvertedY() == 9 && getEntityConvertedX() == 0 && moveLeft == true) {
-        this->setEntityXPosition(576);
+void Entity::checkTeleportCollision(std::vector<std::vector<char>>& map) {
+    if (getEntityConvertedY() == 9 && getEntityConvertedX() == 0 && moveLeft) {
+        this->setEntityXPosition(544);
         this->setEntityYPosition(288);
-        moveLeft = true;
-        moveRight = false;
-        moveUp = false;
-        moveDown = false;
     }
-}
-void Entity::checkTeleportCollisionRight(std::vector<std::vector<char>>& map) {
-    if (getEntityConvertedY() == 9 && getEntityConvertedX() == 17 && moveRight == true) {
-        this->setEntityXPosition(0);
+    else if (getEntityConvertedY() == 9 && getEntityConvertedX() == 17 && moveRight) {
+        this->setEntityXPosition(32);
         this->setEntityYPosition(288);
-        moveLeft = false;
-        moveRight = true;
-        moveUp = false;
-        moveDown = false;
     }
 }

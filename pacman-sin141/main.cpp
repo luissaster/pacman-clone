@@ -168,43 +168,51 @@ int main(void) {
     bool teclas[255] = { false };
     int sprite = 0, fator = 1, tempo, miliseg = 200;
     bool redraw = true;
-    int nextMove = 0;
 
     // Objects
     Map gameMap;
     Pacman playerPacman(288, 480);
-    Blinky ghostBlinky(256, 288);
+    Blinky ghostBlinky(288, 256); //256, 288 <--- blinky's old spawn, spawning at 32,32 to avoid getting stuck in the spawn
     Pinky ghostPinky(320, 288);
     Inky ghostInky(288, 288);
-    Clyde ghostClyde(288, 256);
+    Clyde ghostClyde(256, 288);
 
     al_play_sample(mainSongAudio, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
     gameMap.loadMap("map.txt", mapa);
+
+    Ghost* ghostVet[4];
+    ghostVet[0] = &ghostClyde;
+    ghostVet[1] = &ghostPinky;
+    ghostVet[2] = &ghostInky;
+    ghostVet[3] = &ghostBlinky;
 
     while (running) {
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
 
-        ghostBlinky.calculateEntityPosition();
-        ghostPinky.calculateEntityPosition();
-        ghostInky.calculateEntityPosition();
-        ghostClyde.calculateEntityPosition();
         playerPacman.calculateEntityPosition();
-
         playerPacman.checkCoinCollision(mapa, pacmanEatAudio);
+        playerPacman.checkTeleportCollision(mapa);
+        playerPacman.checkEntityMovement(playerPacman.getNextMove(), mapa);
+        playerPacman.moveEntity(mapa);
 
-        //TODO: Unify left and right check teleport functions
-        playerPacman.checkTeleportCollisionLeft(mapa);
-        playerPacman.checkTeleportCollisionRight(mapa);
-        ghostClyde.checkTeleportCollisionLeft(mapa);
-        ghostClyde.checkTeleportCollisionRight(mapa);
-        ghostBlinky.checkTeleportCollisionLeft(mapa);
-        ghostBlinky.checkTeleportCollisionRight(mapa);
-        ghostPinky.checkTeleportCollisionLeft(mapa);
-        ghostPinky.checkTeleportCollisionRight(mapa);
-        ghostInky.checkTeleportCollisionLeft(mapa);
-        ghostInky.checkTeleportCollisionRight(mapa);
+        std::cout << "[" << playerPacman.getEntityConvertedX() << "][" << playerPacman.getEntityConvertedY() << "]" << std::endl;
+
+        //Ghost functions, we only have Blinky (ghostVet[3]) in chase mode
+        for (int i = 0; i < 4; i++) {
+            ghostVet[i]->calculateEntityPosition();
+            ghostVet[i]->checkTeleportCollision(mapa);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            ghostVet[i]->randomDirection(mapa);
+            ghostVet[i]->moveEntity(mapa);
+        }
+
+        ghostVet[3]->chasePacman(mapa, playerPacman.getEntityConvertedX(), playerPacman.getEntityConvertedY());
+        ghostVet[3]->checkEntityMovement(ghostVet[3]->getNextMove(), mapa);
+        ghostVet[3]->moveEntity(mapa);
 
         if (event.type == ALLEGRO_EVENT_TIMER) {
             // Timer to change the bitmap, used for animating PACMAN
@@ -217,24 +225,17 @@ int main(void) {
 
             // Receive the command and store it until it can be executed
             if (teclas[ALLEGRO_KEY_UP]) {
-                nextMove = ALLEGRO_KEY_UP;
+                playerPacman.setNextMove(ALLEGRO_KEY_UP, mapa);
             }
             if (teclas[ALLEGRO_KEY_DOWN]) {
-                nextMove = ALLEGRO_KEY_DOWN;
+                playerPacman.setNextMove(ALLEGRO_KEY_DOWN, mapa);
             }
             if (teclas[ALLEGRO_KEY_LEFT]) {
-                nextMove = ALLEGRO_KEY_LEFT;
+                playerPacman.setNextMove(ALLEGRO_KEY_LEFT, mapa);
             }
             if (teclas[ALLEGRO_KEY_RIGHT]) {
-                nextMove = ALLEGRO_KEY_RIGHT;
+                playerPacman.setNextMove(ALLEGRO_KEY_RIGHT, mapa);
             }
-
-            playerPacman.checkEntityMovement(nextMove, mapa);
-            playerPacman.moveEntity(mapa);
-            ghostBlinky.moveRandom(mapa);
-            ghostPinky.moveRandom(mapa);
-            ghostInky.moveRandom(mapa);
-            ghostClyde.moveRandom(mapa);
 
             redraw = true;
         }
@@ -252,11 +253,13 @@ int main(void) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             gameMap.renderMap(mapa);
             al_draw_bitmap(map_sprite, 0, -32, 0);
-            playerPacman.renderPacman(pacman_sprite, sprite);
-            ghostBlinky.renderBlinky(blinky_sprite, sprite);
-            ghostInky.renderInky(inky_sprite, sprite);
-            ghostPinky.renderPinky(pinky_sprite, sprite);
-            ghostClyde.renderClyde(clyde_sprite, sprite);
+            playerPacman.renderPacman(pacman_sprite, sprite); 
+
+            ghostVet[0]->renderGhost(clyde_sprite, sprite);
+            ghostVet[1]->renderGhost(pinky_sprite, sprite);
+            ghostVet[2]->renderGhost(inky_sprite, sprite);
+            ghostVet[3]->renderGhost(blinky_sprite, sprite);
+
             al_draw_textf(font, al_map_rgb(255, 255, 255), 32, 0, 0, "Score: %d", playerPacman.getScore());
             al_flip_display();
         }

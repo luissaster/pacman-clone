@@ -19,16 +19,19 @@ public:
     float getEntityY();
     int getEntityConvertedX();
     int getEntityConvertedY();
+    int getCurrentMove();
+    int getNextMove();
+    void setNextMove(int a, std::vector<std::vector<char>>& map);
     void calculateEntityPosition();
     void setEntityXPosition(float x);
     void setEntityYPosition(float y);
     void checkEntityMovement(int instruction, std::vector<std::vector<char>>& map);
     void moveEntity(std::vector<std::vector<char>>& map);
-    void checkTeleportCollisionLeft(std::vector<std::vector<char>>& map);
-    void checkTeleportCollisionRight(std::vector<std::vector<char>>& map);
+    void checkTeleportCollision(std::vector<std::vector<char>>& map);
 protected:
     float moveSpeed, entityX, entityY;
     bool moveUp, moveDown, moveLeft, moveRight;
+    int nextMove;
     int entityConvertedY, entityConvertedX, direction, entityHeight, entityWidth, entitySize;
     int colYCollisionUp, colXCollisionUp, colYCollisionUpNext, colXCollisionUpNext;
     int colYCollisionLeft, colXCollisionLeft, colYCollisionLeftNext, colXCollisionLeftNext;
