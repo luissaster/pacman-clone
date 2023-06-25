@@ -9,7 +9,7 @@ class Entity
 {
 public:
     Entity();
-    ~Entity();
+    virtual ~Entity();
     bool checkWallCollision(std::vector<std::vector<char>>& map);
     bool checkEntityCollisionUp(std::vector<std::vector<char>>& map);
     bool checkEntityCollisionDown(std::vector<std::vector<char>>& map);

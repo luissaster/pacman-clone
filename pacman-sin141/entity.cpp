@@ -1,86 +1,47 @@
 #include "entity.h"
-
+// Constructor & Destructor
 Entity::Entity() {
-    moveSpeed = 0;
-    entityX = 0;
-    entityY = 0;
-    entityConvertedY = 0;
-    entityConvertedX = 0;
-    entityHeight = 0;
-    entityWidth = 0;
-    entitySize = 0;
-    direction = 0;
-    nextMove = 0;
+    moveSpeed = entityX = entityY = 0;
+    entityConvertedY = entityConvertedX = 0;
+    entityHeight = entityWidth = entitySize = direction = nextMove = 0;
     moveUp = moveRight = moveDown = moveLeft = false;
     colYCollisionUp = colXCollisionUp = colYCollisionUpNext = colXCollisionUpNext = 0;
     colYCollisionLeft = colXCollisionLeft = colYCollisionLeftNext = colXCollisionLeftNext = 0;
     colYCollisionRight = colXCollisionRight = colYCollisionRightNext = colXCollisionRightNext = 0;
     colYCollisionBottom = colXCollisionBottom = colYCollisionBottomNext = colXCollisionBottomNext = 0;
 }
-Entity::~Entity() {}
-void Entity::calculateEntityPosition() {
-    entityConvertedY = entityY / entitySize;
-    entityConvertedX = entityX / entitySize;
+Entity::~Entity() {
+    // Destructor
+}
 
-    colYCollisionUp = ceil(entityY / entitySize);
-    colXCollisionUp = entityX / entitySize;
-    colYCollisionUpNext = ceil(entityY / entitySize);
-    colXCollisionUpNext = ceil(entityX / entitySize);
-
-    colYCollisionLeft = ceil(entityY / entitySize);
-    colXCollisionLeft = ceil(entityX / entitySize);
-    colYCollisionLeftNext = entityY / entitySize;
-    colXCollisionLeftNext = ceil(entityX / entitySize);
-
-    colYCollisionRight = ceil(entityY / entitySize);
-    colXCollisionRight = entityX / entitySize;
-    colYCollisionRightNext = entityY / entitySize;
-    colXCollisionRightNext = entityX / entitySize;
-
-    colYCollisionBottom = entityY / entitySize;
-    colXCollisionBottom = ceil(entityX / entitySize);
-    colYCollisionBottomNext = entityY / entitySize;
-    colXCollisionBottomNext = entityX / entitySize;
-}
-bool Entity::checkWallCollision(std::vector<std::vector<char>>& map) {
-    return map[entityConvertedY][entityConvertedX] != '0';
-}
-bool Entity::checkEntityCollisionUp(std::vector<std::vector<char>>& map) {
-    return map[colYCollisionUp - 1][colXCollisionUp] != '0' && map[colYCollisionUpNext - 1][colXCollisionUpNext] != '0';
-}
-bool Entity::checkEntityCollisionDown(std::vector<std::vector<char>>& map) {
-    return map[colYCollisionBottom + 1][colXCollisionBottom] != '0' && map[colYCollisionBottomNext + 1][colXCollisionBottomNext] != '0';
-}
-bool Entity::checkEntityCollisionRight(std::vector<std::vector<char>>& map) {
-    return map[colYCollisionRight][colXCollisionRight + 1] != '0' && map[colYCollisionRightNext][colXCollisionRightNext + 1] != '0';
-}
-bool Entity::checkEntityCollisionLeft(std::vector<std::vector<char>>& map) {
-    return map[colYCollisionLeft][colXCollisionLeft - 1] != '0' && map[colYCollisionLeftNext][colXCollisionLeftNext - 1] != '0';
-}
+// "Get" functions
 int Entity::getEntityConvertedX() {
-    return entityConvertedX;
+    return this->entityConvertedX;
 }
 int Entity::getEntityConvertedY() {
-    return entityConvertedY;
+    return this->entityConvertedY;
 }
 int Entity::getCurrentMove()
 {
-    return direction; // 0 - RIGHT, 1 - DOWN, 2 - LEFT, 3 - UP
+    return direction;
+    // 0 - RIGHT, 1 - DOWN, 2 - LEFT, 3 - UP
 }
 int Entity::getNextMove()
 {
     return this->nextMove;
 }
+float Entity::getEntityX() {
+    return this->entityX;
+}
+float Entity::getEntityY() {
+    return this->entityY;
+}
+
+// "Set" functions
 void Entity::setNextMove(int a, std::vector<std::vector<char>>& map)
 {
     checkEntityMovement(a, map);
     this->nextMove = a;
-}
-float Entity::getEntityX() {
-    return entityX;
-}
-float Entity::getEntityY() {
-    return entityY;
 }
 void Entity::setEntityXPosition(float x) {
     entityX = x;
@@ -88,6 +49,8 @@ void Entity::setEntityXPosition(float x) {
 void Entity::setEntityYPosition(float y) {
     entityY = y;
 }
+
+// Movement related functions
 void Entity::checkEntityMovement(int instruction, std::vector<std::vector<char>>& map) {
     if (instruction == ALLEGRO_KEY_UP && checkEntityCollisionUp(map)) {
         moveUp = true;
@@ -144,6 +107,51 @@ void Entity::moveEntity(std::vector<std::vector<char>>& map) {
         moveRight = false;
     }
 }
+
+// Collision functions, returns "true" if there's no obstacle towards the intended direction
+bool Entity::checkWallCollision(std::vector<std::vector<char>>& map) {
+    return map[entityConvertedY][entityConvertedX] != '0';
+}
+bool Entity::checkEntityCollisionUp(std::vector<std::vector<char>>& map) {
+    return map[colYCollisionUp - 1][colXCollisionUp] != '0' && map[colYCollisionUpNext - 1][colXCollisionUpNext] != '0';
+}
+bool Entity::checkEntityCollisionDown(std::vector<std::vector<char>>& map) {
+    return map[colYCollisionBottom + 1][colXCollisionBottom] != '0' && map[colYCollisionBottomNext + 1][colXCollisionBottomNext] != '0';
+}
+bool Entity::checkEntityCollisionRight(std::vector<std::vector<char>>& map) {
+    return map[colYCollisionRight][colXCollisionRight + 1] != '0' && map[colYCollisionRightNext][colXCollisionRightNext + 1] != '0';
+}
+bool Entity::checkEntityCollisionLeft(std::vector<std::vector<char>>& map) {
+    return map[colYCollisionLeft][colXCollisionLeft - 1] != '0' && map[colYCollisionLeftNext][colXCollisionLeftNext - 1] != '0';
+}
+
+// Float position to intenger map array position converter
+void Entity::calculateEntityPosition() {
+    entityConvertedY = entityY / entitySize;
+    entityConvertedX = entityX / entitySize;
+
+    colYCollisionUp = ceil(entityY / entitySize);
+    colXCollisionUp = entityX / entitySize;
+    colYCollisionUpNext = ceil(entityY / entitySize);
+    colXCollisionUpNext = ceil(entityX / entitySize);
+
+    colYCollisionLeft = ceil(entityY / entitySize);
+    colXCollisionLeft = ceil(entityX / entitySize);
+    colYCollisionLeftNext = entityY / entitySize;
+    colXCollisionLeftNext = ceil(entityX / entitySize);
+
+    colYCollisionRight = ceil(entityY / entitySize);
+    colXCollisionRight = entityX / entitySize;
+    colYCollisionRightNext = entityY / entitySize;
+    colXCollisionRightNext = entityX / entitySize;
+
+    colYCollisionBottom = entityY / entitySize;
+    colXCollisionBottom = ceil(entityX / entitySize);
+    colYCollisionBottomNext = entityY / entitySize;
+    colXCollisionBottomNext = entityX / entitySize;
+}
+
+// Misc. functions
 void Entity::checkTeleportCollision(std::vector<std::vector<char>>& map) {
     if (getEntityConvertedY() == 9 && getEntityConvertedX() == 0 && moveLeft) {
         this->setEntityXPosition(544);

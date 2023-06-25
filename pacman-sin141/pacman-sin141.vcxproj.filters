@@ -13,72 +13,90 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Arquivos de Origem\Enemies">
+      <UniqueIdentifier>{b924e41c-aee4-47f4-9954-b64547269a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\Map">
+      <UniqueIdentifier>{eabaeb81-e97f-450e-b822-4c166a74bbbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\Game Core">
+      <UniqueIdentifier>{a63d1d82-b928-4e84-9d02-814b6cfb4283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\Enemies">
+      <UniqueIdentifier>{4de514f4-e7e9-43d5-8826-553c17059e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\Map">
+      <UniqueIdentifier>{8a774ef3-bdb6-41c5-b08b-f69dc3a8466d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\Game Core">
+      <UniqueIdentifier>{d1b90f9a-d4dc-47f3-8f19-3ebd524abb20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="wall.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="coin.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="pacman.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="entity.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="map.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="ghost.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="blinky.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Origem\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="clyde.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Origem\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="pinky.cpp">
-      <Filter>Arquivos de Origem</Filter>
+    <ClCompile Include="ghost.cpp">
+      <Filter>Arquivos de Origem\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="inky.cpp">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Origem\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="pinky.cpp">
+      <Filter>Arquivos de Origem\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="coin.cpp">
+      <Filter>Arquivos de Origem\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Arquivos de Origem\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>Arquivos de Origem\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="pacman.cpp">
+      <Filter>Arquivos de Origem\Game Core</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Arquivos de Origem\Game Core</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Arquivos de Origem\Game Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="coin.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="wall.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="pacman.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="entity.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="ghost.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="blinky.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+      <Filter>Arquivos de Cabeçalho\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="clyde.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+      <Filter>Arquivos de Cabeçalho\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="pinky.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+    <ClInclude Include="ghost.h">
+      <Filter>Arquivos de Cabeçalho\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="inky.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+      <Filter>Arquivos de Cabeçalho\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="pinky.h">
+      <Filter>Arquivos de Cabeçalho\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="coin.h">
+      <Filter>Arquivos de Cabeçalho\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Arquivos de Cabeçalho\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>Arquivos de Cabeçalho\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="pacman.h">
+      <Filter>Arquivos de Cabeçalho\Game Core</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>Arquivos de Cabeçalho\Game Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

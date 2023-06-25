@@ -1,20 +1,20 @@
 #include "ghost.h"
 Ghost::Ghost() {
     moveSpeed = 2.0;
-    entityHeight = 32;
-    entityWidth = 32;
-    entitySize = 32;
+    entityHeight = entityWidth = entitySize = 32;
     ghostType = 0;
 }
 Ghost::~Ghost() {}
 void Ghost::randomDirection(std::vector<std::vector<char>> map) {
-    int flag = 0;
+    int aux = 0;
     int possibilities = 0;
     int directions[4];
-    // Initialize directions array with zeros
+
     for (int i = 0; i < 4; i++) {
         directions[i] = 0;
     }
+
+    // Special conditions to avoid ghosts being stuck in the spawn box
     if (this->getEntityConvertedX() == 8 && this->getEntityConvertedY() == 9) {
         this->setNextMove(ALLEGRO_KEY_RIGHT, map);
         return;
@@ -31,6 +31,7 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
         this->setNextMove(ALLEGRO_KEY_UP, map);
         return;
     }
+
     if (moveLeft == true) {
         // Check for collision with entities on the left
         if (checkEntityCollisionLeft(map) == true) {
@@ -52,9 +53,9 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
 
         // If there are possible directions to move
         if (possibilities > 0) {
-            flag = rand() % possibilities;
+            aux = rand() % possibilities;
 
-            this->nextMove = directions[flag];
+            this->nextMove = directions[aux];
         }
     }
     else if (moveRight == true) {
@@ -78,9 +79,9 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
 
         // If there are possible directions to move
         if (possibilities > 0) {
-            flag = rand() % possibilities;
+            aux = rand() % possibilities;
 
-            this->nextMove = directions[flag];
+            this->nextMove = directions[aux];
         }
     }
     else if (moveUp == true) {
@@ -104,9 +105,9 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
 
         // If there are possible directions to move
         if (possibilities > 0) {
-            flag = rand() % possibilities;
+            aux = rand() % possibilities;
 
-            this->nextMove = directions[flag];
+            this->nextMove = directions[aux];
         }
     }
     else if (moveDown == true) {
@@ -130,9 +131,9 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
 
         // If there are possible directions to move
         if (possibilities > 0) {
-            flag = rand() % possibilities;
+            aux = rand() % possibilities;
 
-            this->nextMove = directions[flag];
+            this->nextMove = directions[aux];
         }
     }
     else {
@@ -161,9 +162,9 @@ void Ghost::randomDirection(std::vector<std::vector<char>> map) {
 
         // If there are possible directions to move
         if (possibilities > 0) {
-            flag = rand() % possibilities;
+            aux = rand() % possibilities;
 
-            this->nextMove = directions[flag];
+            this->nextMove = directions[aux];
         }
     }
 
