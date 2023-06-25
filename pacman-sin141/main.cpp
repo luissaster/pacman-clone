@@ -52,8 +52,7 @@ int main(void) {
     ALLEGRO_SAMPLE* pacmanEatAudio = al_load_sample(PACMAN_CHOMP);;
     ALLEGRO_SAMPLE* pacmanDiesAudio = al_load_sample(PACMAN_DEATH_SOUND);;
     ALLEGRO_SAMPLE_ID mainSongID;
-
-    al_reserve_samples(3); // Quantity of sounds
+    al_reserve_samples(3);
     std::vector<std::vector<char>> mapa; // Create the map array
 
     // Check initializations
@@ -153,7 +152,11 @@ int main(void) {
                 NULL, ALLEGRO_MESSAGEBOX_ERROR);
             return 0;
         }
-
+        if (!map_sprite) {
+            al_show_native_message_box(display, "Error", "Error", "Failed to load sprites/mapaoverlay.png!",
+                NULL, ALLEGRO_MESSAGEBOX_ERROR);
+            return 0;
+        }
         isStarting = false;
     }
 
@@ -171,13 +174,14 @@ int main(void) {
 
     // Objects
     Map gameMap;
-    Pacman playerPacman(288, 480);
-    Blinky ghostBlinky(288, 256); //256, 288 <--- blinky's old spawn, spawning at 32,32 to avoid getting stuck in the spawn
-    Pinky ghostPinky(320, 288);
-    Inky ghostInky(288, 288);
-    Clyde ghostClyde(256, 288);
+    Pacman playerPacman(288, 480); //288, 480
+    Blinky ghostBlinky(32, 32); //288, 256 -> 32, 32 spawn in box -> spawn on edges
+    Pinky ghostPinky(544, 32); //320, 288 -> 544, 32
+    Inky ghostInky(544, 608); //288, 288 -> 544, 608
+    Clyde ghostClyde(32, 608); //256, 288 -> 32, 608
 
     al_play_sample(mainSongAudio, 0.3, 0, 1, ALLEGRO_PLAYMODE_LOOP, &mainSongID);
+
     gameMap.loadMap("map.txt", mapa);
 
     Ghost* ghostVet[4];
@@ -187,17 +191,17 @@ int main(void) {
     ghostVet[3] = &ghostBlinky;
 
     while (running) {
+
         ALLEGRO_EVENT event;
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
 
+        //Player functions
         playerPacman.calculateEntityPosition();
         playerPacman.checkCoinCollision(mapa, pacmanEatAudio);
         playerPacman.checkTeleportCollision(mapa);
         playerPacman.checkEntityMovement(playerPacman.getNextMove(), mapa);
         playerPacman.moveEntity(mapa);
-
-        std::cout << "[" << playerPacman.getEntityConvertedX() << "][" << playerPacman.getEntityConvertedY() << "]" << std::endl;
 
         //Ghost functions, we only have Blinky (ghostVet[3]) in chase mode
         for (int i = 0; i < 4; i++) {
@@ -253,8 +257,8 @@ int main(void) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             gameMap.renderMap(mapa);
             al_draw_bitmap(map_sprite, 0, -32, 0);
-            playerPacman.renderPacman(pacman_sprite, sprite); 
 
+            playerPacman.renderPacman(pacman_sprite, sprite); 
             ghostVet[0]->renderGhost(clyde_sprite, sprite);
             ghostVet[1]->renderGhost(pinky_sprite, sprite);
             ghostVet[2]->renderGhost(inky_sprite, sprite);
@@ -264,20 +268,23 @@ int main(void) {
             al_flip_display();
         }
 
-        //CLOSING CONDITIONS
+        // End the game when closing the window
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
         }
         // End the game when there's no more coins left
-        if (playerPacman.getScore() == 151) {
+        if (playerPacman.getScore() >= 151) {
+            al_rest(3);
             running = false;
         }
+        // End the game when PacMan collides with a ghost
         if (playerPacman.checkGhostCollision(ghostBlinky, ghostPinky, ghostInky, ghostClyde)) {
             al_stop_sample(&mainSongID);
             al_play_sample(pacmanDiesAudio, 0.6, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
             al_rest(3);
             running = false;
         }
+
     }
 
     // Cleaning: if u create something, don't forget to destroy it
