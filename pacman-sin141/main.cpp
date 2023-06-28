@@ -299,6 +299,7 @@ int main(void) {
     al_destroy_bitmap(pinky_sprite);
     al_destroy_bitmap(inky_sprite);
     al_destroy_bitmap(clyde_sprite);
+    al_destroy_bitmap(map_sprite);
     al_destroy_font(font);
     al_destroy_display(display);
     al_destroy_timer(timer);
