@@ -196,28 +196,6 @@ int main(void) {
         al_wait_for_event(queue, &event);
         tempo = al_get_timer_count(timer);
 
-        //Player functions
-        playerPacman.calculateEntityPosition();
-        playerPacman.checkCoinCollision(mapa, pacmanEatAudio);
-        playerPacman.checkTeleportCollision(mapa);
-        playerPacman.checkEntityMovement(playerPacman.getNextMove(), mapa);
-        playerPacman.moveEntity(mapa);
-
-        //Ghost functions, we only have Blinky (ghostVet[3]) in chase mode
-        for (int i = 0; i < 4; i++) {
-            ghostVet[i]->calculateEntityPosition();
-            ghostVet[i]->checkTeleportCollision(mapa);
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            ghostVet[i]->randomDirection(mapa);
-            ghostVet[i]->moveEntity(mapa);
-        }
-
-        ghostVet[3]->chasePacman(mapa, playerPacman.getEntityConvertedX(), playerPacman.getEntityConvertedY());
-        ghostVet[3]->checkEntityMovement(ghostVet[3]->getNextMove(), mapa);
-        ghostVet[3]->moveEntity(mapa);
-
         if (event.type == ALLEGRO_EVENT_TIMER) {
             // Timer to change the bitmap, used for animating PACMAN
             if (tempo == ((FPS * miliseg) / 1000) || tempo > ((FPS * miliseg) / 1000)) {
@@ -240,6 +218,28 @@ int main(void) {
             if (teclas[ALLEGRO_KEY_RIGHT]) {
                 playerPacman.setNextMove(ALLEGRO_KEY_RIGHT, mapa);
             }
+
+            //Player functions
+            playerPacman.calculateEntityPosition();
+            playerPacman.checkCoinCollision(mapa, pacmanEatAudio);
+            playerPacman.checkTeleportCollision(mapa);
+            playerPacman.checkEntityMovement(playerPacman.getNextMove(), mapa);
+            playerPacman.moveEntity(mapa);
+
+            //Ghost functions, we only have Blinky (ghostVet[3]) in chase mode
+            for (int i = 0; i < 4; i++) {
+                ghostVet[i]->calculateEntityPosition();
+                ghostVet[i]->checkTeleportCollision(mapa);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                ghostVet[i]->randomDirection(mapa);
+                ghostVet[i]->moveEntity(mapa);
+            }
+
+            ghostVet[3]->chasePacman(mapa, playerPacman.getEntityConvertedX(), playerPacman.getEntityConvertedY());
+            ghostVet[3]->checkEntityMovement(ghostVet[3]->getNextMove(), mapa);
+            ghostVet[3]->moveEntity(mapa);
 
             redraw = true;
         }
